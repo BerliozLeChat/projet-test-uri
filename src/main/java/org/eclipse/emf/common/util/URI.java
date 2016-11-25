@@ -1076,7 +1076,7 @@ public abstract class URI
 
         // Create a hierarchical platform-scheme URI from the interned segments.
         //
-        return new Hierarchical(this.hashCode, true, SCHEME_PLATFORM, null, null, true, internArray(segments, 0, usedSegmentCount, hashCode), null);
+        return new Hierarchical(this.hashCode, SCHEME_PLATFORM, null, null, true, internArray(segments, 0, usedSegmentCount, hashCode), null);
       }
 
       @Override
@@ -1585,13 +1585,13 @@ public abstract class URI
         {
           // If it's absolute, we include the file scheme, and it has an absolute path, if there is one or more segments, or if we ignored an empty segment.
           //
-          return new Hierarchical(this.hashCode, true, SCHEME_FILE, authority, device, segmentCount > 0 || ignoredEmptySegment, internedSegments, null);
+          return new Hierarchical(this.hashCode, SCHEME_FILE, authority, device, segmentCount > 0 || ignoredEmptySegment, internedSegments, null);
         }
         else
         {
           // It's a relative URI...
           //
-          return new Hierarchical(this.hashCode, true, null, null, null, isAbsolutePath, internedSegments, null);
+          return new Hierarchical(this.hashCode, null, null, null, isAbsolutePath, internedSegments, null);
         }
       }
 
@@ -1872,7 +1872,7 @@ public abstract class URI
         //
         if (hierarchical)
         {
-          return new Hierarchical(hashCode, hierarchical, scheme, authority, device, absolutePath, segments, query);
+          return new Hierarchical(hashCode, scheme, authority, device, absolutePath, segments, query);
         }
         else
         {
@@ -3107,7 +3107,7 @@ public abstract class URI
      * Assertions are used to validate the integrity of the result.
      * I.e., all components must be interned and the hash code must be equal to the hash code of the {@link #toString()}.
      */
-    protected Hierarchical(int hashCode, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
+    protected Hierarchical(int hashCode, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
     {
       super(hashCode);
 
