@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<problems>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>143</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="field" FQNAME="org.eclipse.emf.common.util.URI.URIPool serialVersionUID" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Field has no usages.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>763</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="field" FQNAME="org.eclipse.emf.common.util.URI.URIPool.PlatformAccessUnit.Queue serialVersionUID" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Field has no usages.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>1111</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="field" FQNAME="org.eclipse.emf.common.util.URI.URIPool.FileAccessUnit.Queue serialVersionUID" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Field has no usages.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>1641</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="field" FQNAME="org.eclipse.emf.common.util.URI.URIPool.URIComponentsAccessUnit.Queue serialVersionUID" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Field has no usages.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>284</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="field" FQNAME="org.eclipse.emf.common.util.URI.URIPool.StringAccessUnit.Queue serialVersionUID" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Field has no usages.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>1109</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="class" FQNAME="org.eclipse.emf.common.util.URI.URIPool.FileAccessUnit.Queue" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+  <problem>
+    <file>file://$PROJECT_DIR$/src/main/java/org/eclipse/emf/common/util/URI.java</file>
+    <line>761</line>
+    <module>URI</module>
+    <package>org.eclipse.emf.common.util</package>
+    <entry_point TYPE="class" FQNAME="org.eclipse.emf.common.util.URI.URIPool.PlatformAccessUnit.Queue" />
+    <problem_class severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">unused declaration</problem_class>
+    <hints>
+      <hint value="comment" />
+      <hint value="delete" />
+    </hints>
+    <description>Class is not instantiated.</description>
+  </problem>
+</problems>
+
