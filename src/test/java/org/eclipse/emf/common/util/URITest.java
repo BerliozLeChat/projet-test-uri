@@ -428,4 +428,35 @@ public class URITest {
     public void testisArchiveScheme4() {
         assertFalse(URI.isArchiveScheme("nope"));
     }
+
+    @Test
+    public void testEquals1(){
+        assertTrue(URI.createURI("test").equals(URI.createURI("test")));
+    }
+/*
+    @Test
+    public void testEquals2(){
+        URI test=URI.createURI("not");
+        assertFalse(URI.createURI("test").equals(test));
+    }
+*/
+    //TODO SegmentEqual
+    @Test
+    public void testSegmentEqual1(){
+        String[] test = {"test"};
+        assertTrue(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createHierarchicalURI(test,null,null)));
+    }
+
+    @Test
+    public void testSegmentEqual2(){
+        String[] test = {"test"};
+        String[] nope = {"nope"};
+        assertFalse(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createHierarchicalURI(nope,null,null)));
+    }
+
+    @Test
+    public void testSegmentEqual3(){
+        String[] test = {"test"};
+        assertFalse(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createURI("nope")));
+    }
 }
