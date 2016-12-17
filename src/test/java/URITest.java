@@ -2,6 +2,8 @@ package org.eclipse.emf.common.util;
 
 import org.junit.*;
 
+import static org.junit.Assert.assertFalse;
+
 public class URITest {
 
     @Before
@@ -29,17 +31,17 @@ public class URITest {
 
     @Test
     public void testValidScheme3() {
-        Assert.assertFalse(URI.validScheme("?"));
+        assertFalse(URI.validScheme("?"));
     }
 
     @Test
     public void testValidScheme4() {
-        Assert.assertFalse(URI.validScheme("/"));
+        assertFalse(URI.validScheme("/"));
     }
 
     @Test
     public void testValidScheme5() {
-        Assert.assertFalse(URI.validScheme("#"));
+        assertFalse(URI.validScheme("#"));
     }
     
     /*
@@ -55,31 +57,31 @@ public class URITest {
 
     @Test
     public void testValidSegment2() {
-        Assert.assertFalse(URI.validSegment(null));
+        assertFalse(URI.validSegment(null));
     }
 
     @Test
     public void testValidSegment3() {
-        Assert.assertFalse(URI.validSegment("?"));
+        assertFalse(URI.validSegment("?"));
     }
 
     @Test
     public void testValidSegment4() {
-        Assert.assertFalse(URI.validSegment("/"));
+        assertFalse(URI.validSegment("/"));
     }
 
     @Test
     public void testValidSegment5() {
-        Assert.assertFalse(URI.validSegment("#"));
+        assertFalse(URI.validSegment("#"));
     }
 
     /*
-     * Test de validSegment
+     * Test de validSegments
      */
     @Test
     public void testValidSegments1() {
         String[] list = {"","?"};
-        Assert.assertFalse(URI.validSegments(list));
+        assertFalse(URI.validSegments(list));
     }
 
     @Test
@@ -96,22 +98,22 @@ public class URITest {
 
     @Test
     public void testValidOpaquePart1(){
-        Assert.assertFalse(URI.validOpaquePart(null));
+        assertFalse(URI.validOpaquePart(null));
     }
 
     @Test
     public void testValidOpaquePart2(){
-        Assert.assertFalse(URI.validOpaquePart(""));
+        assertFalse(URI.validOpaquePart(""));
     }
 
     @Test
     public void testValidOpaquePart3(){
-        Assert.assertFalse(URI.validOpaquePart("#"));
+        assertFalse(URI.validOpaquePart("#"));
     }
 
     @Test
     public void testValidOpaquePart4(){
-        Assert.assertFalse(URI.validOpaquePart("/"));
+        assertFalse(URI.validOpaquePart("/"));
     }
 
     @Test
@@ -131,32 +133,32 @@ public class URITest {
 
     @Test
     public void testValidAuthority3(){
-        Assert.assertFalse(URI.validAuthority("?"));
+        assertFalse(URI.validAuthority("?"));
     }
 
     @Test
     public void testValidAuthority4(){
-        Assert.assertFalse(URI.validAuthority("#"));
+        assertFalse(URI.validAuthority("#"));
     }
 
     @Test
     public void testValidAuthority5(){
-        Assert.assertFalse(URI.validAuthority("/"));
+        assertFalse(URI.validAuthority("/"));
     }
 
     @Test
     public void testValidArchiveAuthority1(){
-        Assert.assertFalse(URI.validArchiveAuthority(""));
+        assertFalse(URI.validArchiveAuthority(""));
     }
 
     @Test
     public void testValidArchiveAuthority2(){
-        Assert.assertFalse(URI.validArchiveAuthority(null));
+        assertFalse(URI.validArchiveAuthority(null));
     }
 
     @Test
     public void testValidArchiveAuthority3(){
-        Assert.assertFalse(URI.validArchiveAuthority("test"));
+        assertFalse(URI.validArchiveAuthority("test"));
     }
 
     @Test
@@ -166,7 +168,7 @@ public class URITest {
 
     @Test
     public void testValidDevice1() {
-        Assert.assertFalse(URI.validDevice("test"));
+        assertFalse(URI.validDevice("test"));
     }
 
     @Test
@@ -176,22 +178,22 @@ public class URITest {
 
     @Test
     public void testValidDevice3() {
-        Assert.assertFalse(URI.validDevice("?"));
+        assertFalse(URI.validDevice("?"));
     }
 
     @Test
     public void testValidDevice4() {
-        Assert.assertFalse(URI.validDevice("/"));
+        assertFalse(URI.validDevice("/"));
     }
 
     @Test
     public void testValidDevice5() {
-        Assert.assertFalse(URI.validDevice("#"));
+        assertFalse(URI.validDevice("#"));
     }
 
     @Test
     public void testValidDevice6() {
-        Assert.assertFalse(URI.validDevice(""));
+        assertFalse(URI.validDevice(""));
     }
 
     @Test
@@ -201,7 +203,7 @@ public class URITest {
 
     @Test
     public void testValidQuery1() {
-        Assert.assertFalse(URI.validQuery("#"));
+        assertFalse(URI.validQuery("#"));
     }
     @Test
     public void testValidQuery2() {
@@ -215,48 +217,54 @@ public class URITest {
     public void testValidFragment() {
         Assert.assertTrue(URI.validFragment("test"));
     }
-    @Test
-    public void testIsRelative() {
-        //TODO: to do
-        Assert.assertFalse(URI.createURI("sdkfsklfds").isRelative());
-    }
+
 
     @Test
     public void testIsHierarchical1() {
-        Assert.assertTrue(URI.createHierarchicalURI("sdkfsklfds", "", "", "", "").isHierarchical());
+        Assert.assertTrue(URI.createURI("test").isHierarchical());
     }
+
     @Test
-    public void testIsHierarchical2() {
-        Assert.assertFalse(URI.createURI("sdkfsklfds").isHierarchical());
+    public void testisHierarchical2() throws Exception {
+        Assert.assertFalse(URI.createGenericURI("test", "test","test").isHierarchical());
     }
 
     @Test
     public void testHasAuthority1() {
-        Assert.assertFalse(URI.createHierarchicalURI(new String[]{}, "", "").hasAuthority());
+        Assert.assertTrue(URI.createHierarchicalURI("test", "test", null, "test", "test").hasAuthority());
     }
     @Test
     public void testHasAuthority2() {
-        Assert.assertTrue(URI.createHierarchicalURI("", "", "", "", "").hasAuthority());
-    }
-    @Test
-    public void testHasAuthority3() {
-        Assert.assertTrue(URI.createHierarchicalURI("", "", "", new String[]{}, "", "").hasAuthority());
+        Assert.assertFalse(URI.createGenericURI("test", "test","test").hasAuthority());
     }
 
     @Test
     public void testHasOpaquePart1() {
-        //TODO: to do
+        Assert.assertFalse(URI.createURI("test").hasOpaquePart());
     }
+
+    @Test
+    public void testHasOpaquePart2() {
+        Assert.assertTrue(URI.createGenericURI("test", "test","test").hasOpaquePart());
+    }
+
     @Test
     public void testHasDevice1() {
-        Assert.assertFalse(URI.createHierarchicalURI(new String[]{}, "", "").hasDevice());
+        Assert.assertFalse(URI.createURI("test").hasDevice());
     }
+
     @Test
     public void testHasDevice2() {
-        Assert.assertTrue(URI.createHierarchicalURI("", "", "", "", "").hasDevice());
+        Assert.assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasDevice());
     }
+
     @Test
-    public void testHasPath1() {
-        //TODO: to do
+    public void testhasPath1() throws Exception {
+        Assert.assertTrue(URI.createPlatformPluginURI("pathName",true).hasPath());
+    }
+
+    @Test
+    public void testHasPath2() {
+        Assert.assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasPath());
     }
 }
