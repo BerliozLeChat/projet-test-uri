@@ -391,8 +391,41 @@ public class URITest {
     }
 
     @Test
-    public void testisArchive() {
-        //TODO
-        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").isArchive());
+    public void testisArchive1() {
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_JAR, "test!", null,null, "test", null).isArchive());
+    }
+
+    @Test
+    public void testisArchive2() {
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ZIP, "test!", null,null, "test", null).isArchive());
+    }
+
+    @Test
+    public void testisArchive3() {
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ARCHIVE, "test!", null,null, "test", null).isArchive());
+    }
+    @Test
+    public void testisArchive4() {
+        assertFalse(URI.createHierarchicalURI("test", "test!", null,null, "test", null).isArchive());
+    }
+
+    @Test
+    public void testisArchiveScheme1() {
+        assertTrue(URI.isArchiveScheme(URI.SCHEME_JAR));
+    }
+
+    @Test
+    public void testisArchiveScheme2() {
+        assertTrue(URI.isArchiveScheme(URI.SCHEME_ZIP));
+    }
+
+    @Test
+    public void testisArchiveScheme3() {
+        assertTrue(URI.isArchiveScheme(URI.SCHEME_ARCHIVE));
+    }
+
+    @Test
+    public void testisArchiveScheme4() {
+        assertFalse(URI.isArchiveScheme("nope"));
     }
 }
