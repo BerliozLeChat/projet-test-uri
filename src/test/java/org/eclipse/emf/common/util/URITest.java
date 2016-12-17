@@ -44,7 +44,7 @@ public class URITest {
     public void testValidScheme5() {
         assertFalse(URI.validScheme("#"));
     }
-    
+
     /*
      *
      */
@@ -81,13 +81,13 @@ public class URITest {
      */
     @Test
     public void testValidSegments1() {
-        String[] list = {"","?"};
+        String[] list = {"", "?"};
         assertFalse(URI.validSegments(list));
     }
 
     @Test
     public void testValidSegments2() {
-        String[] list = {"","ok"};
+        String[] list = {"", "ok"};
         assertTrue(URI.validSegments(list));
     }
 
@@ -98,72 +98,72 @@ public class URITest {
     }
 
     @Test
-    public void testValidOpaquePart1(){
+    public void testValidOpaquePart1() {
         assertFalse(URI.validOpaquePart(null));
     }
 
     @Test
-    public void testValidOpaquePart2(){
+    public void testValidOpaquePart2() {
         assertFalse(URI.validOpaquePart(""));
     }
 
     @Test
-    public void testValidOpaquePart3(){
+    public void testValidOpaquePart3() {
         assertFalse(URI.validOpaquePart("#"));
     }
 
     @Test
-    public void testValidOpaquePart4(){
+    public void testValidOpaquePart4() {
         assertFalse(URI.validOpaquePart("/"));
     }
 
     @Test
-    public void testValidOpaquePart5(){
+    public void testValidOpaquePart5() {
         assertTrue(URI.validOpaquePart(" /"));
     }
 
     @Test
-    public void testValidAuthority1(){
+    public void testValidAuthority1() {
         assertTrue(URI.validAuthority(null));
     }
 
     @Test
-    public void testValidAuthority2(){
+    public void testValidAuthority2() {
         assertTrue(URI.validAuthority(""));
     }
 
     @Test
-    public void testValidAuthority3(){
+    public void testValidAuthority3() {
         assertFalse(URI.validAuthority("?"));
     }
 
     @Test
-    public void testValidAuthority4(){
+    public void testValidAuthority4() {
         assertFalse(URI.validAuthority("#"));
     }
 
     @Test
-    public void testValidAuthority5(){
+    public void testValidAuthority5() {
         assertFalse(URI.validAuthority("/"));
     }
 
     @Test
-    public void testValidArchiveAuthority1(){
+    public void testValidArchiveAuthority1() {
         assertFalse(URI.validArchiveAuthority(""));
     }
 
     @Test
-    public void testValidArchiveAuthority2(){
+    public void testValidArchiveAuthority2() {
         assertFalse(URI.validArchiveAuthority(null));
     }
 
     @Test
-    public void testValidArchiveAuthority3(){
+    public void testValidArchiveAuthority3() {
         assertFalse(URI.validArchiveAuthority("test"));
     }
 
     @Test
-    public void testValidArchiveAuthority4(){
+    public void testValidArchiveAuthority4() {
         assertTrue(URI.validArchiveAuthority("test!"));
     }
 
@@ -206,14 +206,17 @@ public class URITest {
     public void testValidQuery1() {
         assertFalse(URI.validQuery("#"));
     }
+
     @Test
     public void testValidQuery2() {
         assertTrue(URI.validQuery("test"));
     }
+
     @Test
     public void testValidQuery3() {
         assertTrue(URI.validQuery(null));
     }
+
     @Test
     public void testValidFragment() {
         assertTrue(URI.validFragment("test"));
@@ -227,16 +230,17 @@ public class URITest {
 
     @Test
     public void testisHierarchical2() throws Exception {
-        assertFalse(URI.createGenericURI("test", "test","test").isHierarchical());
+        assertFalse(URI.createGenericURI("test", "test", "test").isHierarchical());
     }
 
     @Test
     public void testHasAuthority1() {
         assertTrue(URI.createHierarchicalURI("test", "test", null, "test", "test").hasAuthority());
     }
+
     @Test
     public void testHasAuthority2() {
-        assertFalse(URI.createGenericURI("test", "test","test").hasAuthority());
+        assertFalse(URI.createGenericURI("test", "test", "test").hasAuthority());
     }
 
     @Test
@@ -246,7 +250,7 @@ public class URITest {
 
     @Test
     public void testHasOpaquePart2() {
-        assertTrue(URI.createGenericURI("test", "test","test").hasOpaquePart());
+        assertTrue(URI.createGenericURI("test", "test", "test").hasOpaquePart());
     }
 
     @Test
@@ -261,7 +265,7 @@ public class URITest {
 
     @Test
     public void testhasPath1() {
-        assertTrue(URI.createPlatformPluginURI("pathName",true).hasPath());
+        assertTrue(URI.createPlatformPluginURI("pathName", true).hasPath());
     }
 
     @Test
@@ -292,7 +296,7 @@ public class URITest {
 
     @Test
     public void testhasEmptyPath1() {
-        assertTrue(URI.createHierarchicalURI(null, "test","test").hasEmptyPath());
+        assertTrue(URI.createHierarchicalURI(null, "test", "test").hasEmptyPath());
     }
 
     @Test
@@ -326,12 +330,69 @@ public class URITest {
     }
 
     @Test
-    public void isCurrentDocumentReferenceTrue() {
+    public void testisCurrentDocumentReference1() {
         assertTrue(URI.createHierarchicalURI(null, null, null).isCurrentDocumentReference());
     }
 
     @Test
-    public void isCurrentDocumentReferenceFalse() {
+    public void testisCurrentDocumentReference2() {
         assertFalse(URI.createURI("test").isCurrentDocumentReference());
+    }
+
+    @Test
+    public void testisEmpty1() {
+        assertTrue(URI.createHierarchicalURI(null, null, null).isEmpty());
+    }
+
+    @Test
+    public void testisEmpty2() {
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isEmpty());
+    }
+
+    @Test
+    public void testisFile1() {
+        assertTrue(URI.createFileURI("test").isFile());
+    }
+
+    @Test
+    public void testisFile2() {
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isFile());
+    }
+
+    @Test
+    public void testisPlateform1() {
+        assertTrue(URI.createPlatformResourceURI("test",true).isPlatform());
+    }
+
+    @Test
+    public void testisPlateform2() {
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatform());
+    }
+
+    @Test
+    public void testisPlateformResource1() {
+        assertTrue(URI.createPlatformResourceURI("test",true).isPlatformResource());
+    }
+
+    @Test
+    public void testisPlateformResource2() {
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatformResource());
+    }
+
+
+    @Test
+    public void testisPlateformPlugin1() {
+        assertTrue(URI.createPlatformPluginURI("test",true).isPlatformPlugin());
+    }
+
+    @Test
+    public void testisPlateformPlugin2() {
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatformPlugin());
+    }
+
+    @Test
+    public void testisArchive() {
+        //TODO
+        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").isArchive());
     }
 }
