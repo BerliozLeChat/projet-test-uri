@@ -2261,9 +2261,7 @@ public abstract class URI
         for (int i = 0, len = chars.length(); i < len; i++)
         {
             char c = chars.charAt(i);
-            if (c < 64) {
-                result |= 1L << c;
-            }
+            if (c < 64) result |= 1L << c;
         }
         return result;
     }
@@ -2276,9 +2274,7 @@ public abstract class URI
         for (int i = 0, len = chars.length(); i < len; i++)
         {
             char c = chars.charAt(i);
-            if (c >= 64 && c < 128) {
-                result |= 1L << (c - 64);
-            }
+            if (c >= 64 && c < 128) result |= 1L << (c - 64);
         }
         return result;
     }
@@ -2594,7 +2590,7 @@ public abstract class URI
      * <code>C:myfile.txt</code>) cannot be expressed as a valid URI.
      * An absolute URI, i.e., one with <code>file:</code> will only be returned if the <code>pathName</code> itself is {@link File#isAbsolute() absolute}.
      * In other words, a relative path will yield a {@link #isRelative() relative} URI,
-     * and in particular on Windows, a path is absolute only if the device is specified, 
+     * and in particular on Windows, a path is absolute only if the device is specified,
      * e.g., <code>C:/myfile.text</code> is absolute but <code>/myfile.text</code> is relative on Windows though absolute on Unix-style file systems.
      *
      *
@@ -2872,15 +2868,8 @@ public abstract class URI
     {
         if (value != null && value.length() > 0 && value.charAt(value.length() - 1) == ARCHIVE_IDENTIFIER)
         {
-            try
-            {
-                URI archiveURI = createURI(value.substring(0, value.length() - 1));
-                return !archiveURI.hasFragment();
-            }
-            catch (IllegalArgumentException e)
-            {
-                e.printStackTrace();
-            }
+            URI archiveURI = createURI(value.substring(0, value.length() - 1));
+            return !archiveURI.hasFragment();
         }
         return false;
     }
@@ -5230,17 +5219,12 @@ public abstract class URI
     }
 
     /**
-     * Returns the hash code.
+     Returns the hash code.
      */
     @Override
     public int hashCode()
     {
         return hashCode;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this.equals(this, obj);
     }
 
     // Tests whether this URI's path segment array is equal to that of the given uri.
@@ -5519,6 +5503,7 @@ public abstract class URI
         }
         else
         {
+            int hashCode = (this.hashCode * 31 + FRAGMENT_SEPARATOR) * CommonUtil.powerOf31(fragment.length()) + fragment.hashCode();
             return new Fragment(hashCode, this, fragment);
         }
     }
@@ -6046,7 +6031,7 @@ public abstract class URI
                     if (expectedBytes > 0)
                     {
                         if ((character & 0xC0) == 0x80)
-                        {
+                        {System.out.println("1.1.1");
                             bytes[receivedBytes++] = (byte)character;
                         }
                         else
@@ -6102,7 +6087,7 @@ public abstract class URI
                     else
                     {
                         for (int j = 0; j < receivedBytes; ++j)
-                        {
+                        {System.out.println("1.4.for");
                             result.append((char)bytes[j]);
                         }
                         receivedBytes = 0;
