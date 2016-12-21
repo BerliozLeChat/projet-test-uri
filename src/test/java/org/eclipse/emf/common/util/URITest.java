@@ -975,7 +975,7 @@ public class URITest {
     public void testToFileString2() {
         String[] segments = { "toto", "titi" };
         URI uri = URI.createHierarchicalURI(segments, null, "fragment");
-        assertEquals("s1/s2", uri.toFileString());
+        assertEquals("toto/titi", uri.toFileString());
     }
 
     @Test
@@ -1070,5 +1070,201 @@ public class URITest {
                 segments, "query", "fragment");
         URI new_uri = uri.trimSegments(0);
         assertEquals(uri, new_uri);
+    }
+
+    @Test
+    public void testHasTrailingPathSeparator1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        assertFalse(uri.hasTrailingPathSeparator());
+    }
+
+    @Test
+    public void testHasTrailingPathSeparator2() {
+        String[] segments = { "toto", "titi", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        assertTrue(uri.hasTrailingPathSeparator());
+    }
+
+    @Test
+    public void testFileExtension1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        assertEquals(null, uri.fileExtension());
+    }
+
+    @Test
+    public void testFileExtension2() {
+        String[] segments = { "toto", "titi.html" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        assertEquals("html", uri.fileExtension());
+    }
+
+    @Test
+    public void testAppendFileExtension1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendFileExtension("html");
+        assertEquals("html", uri.fileExtension());
+    }
+
+    @Test
+    public void testAppendFileExtension2() {
+        URI uri = URI.createGenericURI("scheme", "opaquepart", "fragment");
+        URI new_uri = uri.appendFileExtension("html");
+        assertEquals(new_uri, uri);
+    }
+
+    @Test
+    public void testAppendFileExtension3() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendFileExtension("html");
+        assertEquals("html", uri.fileExtension());
+    }
+
+    @Test
+    public void testTrimFileExtension1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        URI trimed_uri = uri.trimFileExtension();
+        assertEquals(uri, trimed_uri);
+    }
+
+    @Test
+    public void testTrimFileExtension2() {
+        String[] segments_file = { "toto", "titi.html" };
+        String[] segments = { "toto", "titi" };
+
+        URI file_uri = URI.createHierarchicalURI("scheme", "authority",
+                "device:",
+                segments_file, "query", "fragment");
+
+        URI uri = URI.createHierarchicalURI("scheme", "authority",
+                "device:", segments, "query", "fragment");
+        file_uri = file_uri.trimFileExtension();
+        assertEquals(file_uri, uri);
+    }
+
+    @Test
+    public void testIsPrefix1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        assertFalse(uri.isPrefix());
+    }
+
+    @Test
+    public void testIsPrefix2() {
+        String[] segments = { "toto", "titi", "" };
+        URI uri = URI.createHierarchicalURI(segments, null, "fragment");
+        assertFalse(uri.isPrefix());
+    }
+
+    @Test
+    public void testIsPrefix3() {
+        String[] segments = { "toto", "titi", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", null);
+        assertFalse(uri.isPrefix());
+    }
+
+    @Test
+    public void testIsPrefix4() {
+        String[] segments = { "toto", "titi","" };
+        URI uri = URI.createHierarchicalURI(segments, null, null);
+        assertTrue(uri.isPrefix());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testReplacePrefix1() {
+        String[] segments = { "toto", "titi", "" };
+        String[] replace_segments = { "new", "test", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        URI prefix = URI.createHierarchicalURI(segments, "query",
+                null);
+        URI replace_prefix = URI.createHierarchicalURI(replace_segments, null,
+                null);
+        uri.replacePrefix(prefix, replace_prefix);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testReplacePrefix2() {
+        String[] segments = { "toto", "titi", "" };
+        String[] replace_segments = { "new", "test", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        URI prefix = URI.createHierarchicalURI(segments, null, null);
+        URI replace_prefix = URI.createHierarchicalURI(replace_segments, null,
+                "fragment");
+        uri.replacePrefix(prefix, replace_prefix);
+    }
+
+    @Test
+    public void testReplacePrefix3() {
+        String[] segments = { "toto", "titi", "" };
+        String[] replace_segments = { "new", "test", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        URI prefix = URI.createHierarchicalURI(replace_segments, null,
+                null);
+        URI replace_prefix = URI.createHierarchicalURI(replace_segments, null,
+                null);
+        assertNull(uri.replacePrefix(prefix, replace_prefix));
+    }
+
+    @Test
+    public void testReplacePrefix4() {
+        String[] segments = { "toto", "titi", "" };
+        String[] replace_segments = { "new", "test", "" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        URI prefix = URI.createHierarchicalURI(segments, null,
+                null);
+        URI replace_prefix = URI.createHierarchicalURI(replace_segments, null,
+                null);
+        assertEquals("new/test/#fragment", uri.replacePrefix(prefix,
+                replace_prefix).toString());
+    }
+
+    @Test
+    public void testEncodeOpaquePart1() {
+        assertEquals("test%23", URI.encodeOpaquePart("test#", true));
+    }
+
+    @Test
+    public void testEncodeOpaquePart2() {
+        assertEquals("test?", URI.encodeOpaquePart("test?", true));
+    }
+
+    @Test
+    public void testEncodeOpaquePart3() {
+        assertEquals("test%23%23", URI.encodeOpaquePart("test%23#", true));
+    }
+
+    @Test
+    public void testEncodeOpaquePart4() {
+        //% est encodé
+        assertEquals("test%2523%23", URI.encodeOpaquePart("test%23#", false));
+    }
+
+    @Test
+    public void testEncodeAuthority1() {
+        assertEquals("test%23", URI.encodeAuthority("test#", true));
+    }
+
+    @Test
+    public void testEncodeAuthority2() {
+        assertEquals("test!", URI.encodeAuthority("test!", true));
+    }
+
+    @Test
+    public void testEncodeAuthority3() {
+        assertEquals("test%23%23", URI.encodeAuthority("test%23#", true));
+    }
+
+    @Test
+    public void testEncodeAuthority4() {
+        assertEquals("test%2523%23", URI.encodeAuthority("test%23#", false));
     }
 }
