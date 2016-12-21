@@ -2,8 +2,10 @@ package org.eclipse.emf.common.util;
 
 import org.junit.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class URITest {
 
@@ -260,28 +262,33 @@ public class URITest {
 
     @Test
     public void testHasDevice2() {
-        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasDevice());
+        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasDevice());
     }
 
     @Test
     public void testhasPath1() {
-        assertTrue(URI.createPlatformPluginURI("pathName", true).hasPath());
+        assertTrue(URI.createPlatformPluginURI
+                ("pathName", true).hasPath());
     }
 
     @Test
     public void testHasPath2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasPath());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasPath());
     }
 
     @Test
     public void testhasAbsolutePath1() {
-        assertTrue(URI.createHierarchicalURI("test", "test", ":", null, "test", "test").hasAbsolutePath());
+        assertTrue(URI.createHierarchicalURI("test", "test", ":", null,
+                "test", "test") .hasAbsolutePath());
     }
 
 
     @Test
     public void testhasAbsolutePath2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasAbsolutePath());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasAbsolutePath());
     }
 
     @Test
@@ -291,7 +298,8 @@ public class URITest {
 
     @Test
     public void testhasRelativePath2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasRelativePath());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasRelativePath());
     }
 
     @Test
@@ -306,47 +314,56 @@ public class URITest {
 
     @Test
     public void testhasEmptyPath3() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasEmptyPath());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasEmptyPath());
     }
 
     @Test
     public void testhasQuery1() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", null, "test").hasQuery());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", null,
+                "test") .hasQuery());
     }
 
     @Test
     public void testhasQuery2() {
-        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasQuery());
+        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasQuery());
     }
 
     @Test
     public void testhasFragment1() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", null).hasFragment());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                null) .hasFragment());
     }
 
     @Test
     public void testhasFragment2() {
-        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test", "test").hasFragment());
+        assertTrue(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .hasFragment());
     }
 
     @Test
     public void testisCurrentDocumentReference1() {
-        assertTrue(URI.createHierarchicalURI(null, null, null).isCurrentDocumentReference());
+        assertTrue(URI.createHierarchicalURI(null, null, null)
+                .isCurrentDocumentReference());
     }
 
     @Test
     public void testisCurrentDocumentReference2() {
-        assertFalse(URI.createURI("test").isCurrentDocumentReference());
+        assertFalse(URI.createURI
+                ("test") .isCurrentDocumentReference());
     }
 
     @Test
     public void testisEmpty1() {
-        assertTrue(URI.createHierarchicalURI(null, null, null).isEmpty());
+        assertTrue(URI.createHierarchicalURI(null,
+                null, null) .isEmpty());
     }
 
     @Test
     public void testisEmpty2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isEmpty());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .isEmpty());
     }
 
     @Test
@@ -356,17 +373,20 @@ public class URITest {
 
     @Test
     public void testisFile2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isFile());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .isFile());
     }
 
     @Test
     public void testisPlateform1() {
-        assertTrue(URI.createPlatformResourceURI("test",true).isPlatform());
+        assertTrue(URI.createPlatformResourceURI
+                ("test",true) .isPlatform());
     }
 
     @Test
     public void testisPlateform2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatform());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .isPlatform());
     }
 
     @Test
@@ -376,37 +396,44 @@ public class URITest {
 
     @Test
     public void testisPlateformResource2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatformResource());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .isPlatformResource());
     }
 
 
     @Test
     public void testisPlateformPlugin1() {
-        assertTrue(URI.createPlatformPluginURI("test",true).isPlatformPlugin());
+        assertTrue(URI
+                .createPlatformPluginURI("test",true) .isPlatformPlugin());
     }
 
     @Test
     public void testisPlateformPlugin2() {
-        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test", "test").isPlatformPlugin());
+        assertFalse(URI.createHierarchicalURI("test", "test", ":", "test",
+                "test") .isPlatformPlugin());
     }
 
     @Test
     public void testisArchive1() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_JAR, "test!", null,null, "test", null).isArchive());
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_JAR, "test!", null,
+                null, "test", null) .isArchive());
     }
 
     @Test
     public void testisArchive2() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ZIP, "test!", null,null, "test", null).isArchive());
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ZIP, "test!", null,
+                null, "test", null) .isArchive());
     }
 
     @Test
     public void testisArchive3() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ARCHIVE, "test!", null,null, "test", null).isArchive());
+        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ARCHIVE, "test!",
+                null,null, "test", null). isArchive());
     }
     @Test
     public void testisArchive4() {
-        assertFalse(URI.createHierarchicalURI("test", "test!", null,null, "test", null).isArchive());
+        assertFalse(URI.createHierarchicalURI("test", "test!", null,null,
+                "test", null) .isArchive());
     }
 
     @Test
@@ -444,9 +471,10 @@ public class URITest {
     @Test
     public void testSegmentEqual1(){
         String[] test = {"test"};
-        assertTrue(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createHierarchicalURI(test,null,null)));
+        assertTrue(URI.createHierarchicalURI(test,"test","test")
+                .segmentsEqual(URI.createHierarchicalURI(test,null,null)));
     }
-
+/*
     @Test
     public void testSegmentEqual2(){
         String[] test = {"test"};
@@ -459,4 +487,174 @@ public class URITest {
         String[] test = {"test"};
         assertFalse(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createURI("nope")));
     }
+
+*/
+
+    @Test
+    public void testScheme1() {
+        URI uri = URI.createURI("toto/test/tata");
+        assertEquals(uri.scheme(), null);
+    }
+
+    @Test
+    public void testScheme2() {
+        URI uri = URI.createURI("scheme://toto/test/tata");
+        assertEquals(uri.scheme(), "scheme");
+    }
+
+    @Test
+    public void testOpaquePart1() {
+        URI uri = URI.createURI("toto/test/tata");
+        assertEquals(uri.opaquePart(), null);
+    }
+
+    @Test
+    public void testOpaquePart2() {
+        URI uri = URI.createGenericURI("scheme", "opaquePart", "fragment");
+        assertEquals(uri.opaquePart(), "opaquePart");
+    }
+
+    @Test
+    public void testAuthority1() {
+        String[] segments = { "s1", "s2" };
+        URI uri = URI.createHierarchicalURI(segments, "query", "fragment");
+        assertEquals(uri.authority(), null);
+    }
+
+    @Test
+    public void testAuthority2() {
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                "query", "fragment");
+        assertEquals(uri.authority(), "authority");
+    }
+
+    @Test
+    public void testUserInfo1() {
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                "query", "fragment");
+        assertEquals(uri.userInfo(), null);
+    }
+
+    @Test
+    public void testUserInfo2() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@authority",
+                "device:", "query", "fragment");
+        assertEquals(uri.userInfo(), "user");
+    }
+
+    @Test
+    public void testHost1() {
+        URI uri = URI.createHierarchicalURI("scheme", null, "device:",
+                "query", "fragment");
+        assertEquals(uri.host(), null);
+    }
+
+    @Test
+    public void testHost2() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@host:port",
+                "device:", "query", "fragment");
+        assertEquals(uri.host(), "host");
+    }
+
+    @Test
+    public void testPort1() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@host", "device:",
+                "query","fragment");
+        assertEquals(uri.port(), null);
+    }
+
+    @Test
+    public void testPort2() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@host:port",
+                "device:", "query", "fragment");
+        assertEquals(uri.port(), "port");
+    }
+
+    @Test
+    public void testDevice1() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@host", null,
+                "query","fragment");
+        assertEquals(uri.device(), null);
+    }
+
+    @Test
+    public void testDevice2() {
+        URI uri = URI.createHierarchicalURI("scheme", "user@host", "device:",
+                "query", "fragment");
+        assertEquals(uri.device(), "device:");
+    }
+
+    @Test
+    public void testSegments1() {
+        String[] vide = {};
+        String[] segments = {};
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+
+        assertArrayEquals(vide, uri.segments());
+    }
+
+    @Test
+    public void testSegments2() {
+        String[] segments = { "foo", "bar" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        String[] s = { "foo", "bar" };
+        assertArrayEquals(s, uri.segments());
+    }
+
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testSegmentsList1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        List<String> s = uri.segmentsList();
+        s.add("test");//la liste est non modifiable : exception
+    }
+
+    @Test
+    public void testSegmentsList2() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        List<String> s = new ArrayList<String>();
+        s.add("toto");
+        s.add("titi");
+        assertEquals(s, uri.segmentsList());
+    }
+
+    @Test
+    public void testSegmentCount1() {
+        String[] segments = { "test" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        assertEquals(1, uri.segmentCount());
+    }
+
+    @Test
+    public void testSegmentCount2() {
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                null, "query", "fragment");
+
+        assertEquals(0, uri.segmentCount());
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSegment1() {
+        String[] segments = { "test" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri.segment(1);
+    }
+
+    @Test
+    public void testSegment2() {
+        String[] segments = { "test" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        assertEquals("test", uri.segment(0));
+    }
+
+
 }
