@@ -1,12 +1,13 @@
 package org.eclipse.emf.common.util;
 
 import java.lang.ref.WeakReference;
+
 import static org.eclipse.emf.common.util.CONSTANT.*;
+
 /**
  * A subclass for representing an opaque URI.
  */
-final class Opaque extends URI
-{
+final class Opaque extends URI {
     /**
      * The scheme of the opaque URI.
      */
@@ -27,8 +28,7 @@ final class Opaque extends URI
      * Assertions are used to validate the integrity of the result.
      * I.e., both components must be interned and the hash code must be equal to the hash code of the {@link #toString()}.
      */
-    protected Opaque(int hashCode, String scheme, String opaquePart)
-    {
+    protected Opaque(int hashCode, String scheme, String opaquePart) {
         super(hashCode);
 
         this.scheme = scheme;
@@ -52,48 +52,38 @@ final class Opaque extends URI
     }
 
     @Override
-    public boolean hasOpaquePart()
-    {
+    public boolean hasOpaquePart() {
         return true;
     }
 
     @Override
-    public String scheme()
-    {
+    public String scheme() {
         return scheme;
     }
 
     @Override
-    public String opaquePart()
-    {
+    public String opaquePart() {
         return opaquePart;
     }
 
     @Override
-    protected void cacheString(String string)
-    {
+    protected void cacheString(String string) {
         toString = POOL.newCachedToString(this, string);
     }
 
     @Override
-    protected void flushCachedString()
-    {
+    protected void flushCachedString() {
         toString = null;
     }
 
     @Override
-    protected String getCachedString()
-    {
+    protected String getCachedString() {
         WeakReference<String> toString = this.toString;
-        if (toString != null)
-        {
+        if (toString != null) {
             String result = toString.get();
-            if (result == null)
-            {
+            if (result == null) {
                 toString.clear();
-            }
-            else
-            {
+            } else {
                 return result;
             }
         }
@@ -101,11 +91,9 @@ final class Opaque extends URI
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String cachedString = getCachedString();
-        if (cachedString != null)
-        {
+        if (cachedString != null) {
             return cachedString;
         }
 
@@ -120,30 +108,25 @@ final class Opaque extends URI
     }
 
     @Override
-    protected boolean matches(String string)
-    {
+    protected boolean matches(String string) {
         String cachedString = getCachedString();
-        if (cachedString != null)
-        {
+        if (cachedString != null) {
             return cachedString.equals(string);
         }
 
         int index = 0;
-        if (!string.startsWith(scheme))
-        {
+        if (!string.startsWith(scheme)) {
             return false;
         }
 
         int length = string.length();
         index += scheme.length();
-        if (index >= length || string.charAt(index) != SCHEME_SEPARATOR)
-        {
+        if (index >= length || string.charAt(index) != SCHEME_SEPARATOR) {
             return false;
         }
         ++index;
 
-        if (!string.startsWith(opaquePart, index))
-        {
+        if (!string.startsWith(opaquePart, index)) {
             return false;
         }
         index += opaquePart.length();
@@ -152,8 +135,7 @@ final class Opaque extends URI
     }
 
     @Override
-    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
-    {
+    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query) {
         return
                 !hierarchical &&
                         !absolutePath &&

@@ -4,9 +4,9 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * <p>
  * Contributors:
- *   IBM - Initial API and implementation
+ * IBM - Initial API and implementation
  */
 package org.eclipse.emf.common.util;
 
@@ -125,8 +125,7 @@ import static org.eclipse.emf.common.util.CONSTANT.*;
  * preserved.  In the latter case, the empty authority will override the
  * base authority, resulting in <code>http:///bar</code>!
  */
-public abstract class URI
-{
+public abstract class URI {
     protected static final boolean DEBUG = false;
 
     /**
@@ -140,8 +139,7 @@ public abstract class URI
 
     // Ensure that all the string constants used as components in URIs are directly in the string pool.
     //
-    static
-    {
+    static {
         // Ensure that all the string constants are themselves Java interned in the string pool.
         //
         CommonUtil.STRING_POOL.javaIntern(SCHEME_FILE);
@@ -161,8 +159,7 @@ public abstract class URI
 
 
     // Static initializer for archiveSchemes.
-    static
-    {
+    static {
         // Initialize the archive schemes.
         //
         List<String> list = new UniqueEList<String>();
@@ -173,13 +170,10 @@ public abstract class URI
         list.add(SCHEME_ZIP);
         list.add(SCHEME_ARCHIVE);
 
-        if (propertyValue != null)
-        {
-            for (StringTokenizer t = new StringTokenizer(propertyValue); t.hasMoreTokens(); )
-            {
+        if (propertyValue != null) {
+            for (StringTokenizer t = new StringTokenizer(propertyValue); t.hasMoreTokens(); ) {
                 String token = t.nextToken().toLowerCase();
-                if (validScheme(token))
-                {
+                if (validScheme(token)) {
                     String scheme = CommonUtil.javaIntern(token);
                     list.add(scheme);
                 }
@@ -190,27 +184,22 @@ public abstract class URI
     }
 
     // Returns the lower half bitmask for the given ASCII character.
-    protected static long lowBitmask(char c)
-    {
+    protected static long lowBitmask(char c) {
         return c < 64 ? 1L << c : 0L;
     }
 
     // Returns the upper half bitmask for the given ACSII character.
-    protected static long highBitmask(char c)
-    {
+    protected static long highBitmask(char c) {
         return c >= 64 && c < 128 ? 1L << (c - 64) : 0L;
     }
 
     // Returns the lower half bitmask for all ASCII characters between the two
     // given characters, inclusive.
-    protected static long lowBitmask(char from, char to)
-    {
+    protected static long lowBitmask(char from, char to) {
         long result = 0L;
-        if (from < 64 && from <= to)
-        {
+        if (from < 64 && from <= to) {
             to = to < 64 ? to : 63;
-            for (char c = from; c <= to; c++)
-            {
+            for (char c = from; c <= to; c++) {
                 result |= 1L << c;
             }
         }
@@ -219,18 +208,15 @@ public abstract class URI
 
     // Returns the upper half bitmask for all AsCII characters between the two
     // given characters, inclusive.
-    protected static long highBitmask(char from, char to)
-    {
-        return to < 64 ? 0 : lowBitmask((char)(from < 64 ? 0 : from - 64), (char)(to - 64));
+    protected static long highBitmask(char from, char to) {
+        return to < 64 ? 0 : lowBitmask((char) (from < 64 ? 0 : from - 64), (char) (to - 64));
     }
 
     // Returns the lower half bitmask for all the ASCII characters in the given
     // string.
-    protected static long lowBitmask(String chars)
-    {
+    protected static long lowBitmask(String chars) {
         long result = 0L;
-        for (int i = 0, len = chars.length(); i < len; i++)
-        {
+        for (int i = 0, len = chars.length(); i < len; i++) {
             char c = chars.charAt(i);
             if (c < 64) result |= 1L << c;
         }
@@ -239,11 +225,9 @@ public abstract class URI
 
     // Returns the upper half bitmask for all the ASCII characters in the given
     // string.
-    protected static long highBitmask(String chars)
-    {
+    protected static long highBitmask(String chars) {
         long result = 0L;
-        for (int i = 0, len = chars.length(); i < len; i++)
-        {
+        for (int i = 0, len = chars.length(); i < len; i++) {
             char c = chars.charAt(i);
             if (c >= 64 && c < 128) result |= 1L << (c - 64);
         }
@@ -283,15 +267,12 @@ public abstract class URI
      * validScheme}, {@link #validOpaquePart validOpaquePart}, or {@link
      * #validFragment validFragment}, respectively.
      */
-    public static URI createGenericURI(String scheme, String opaquePart, String fragment)
-    {
-        if (scheme == null)
-        {
+    public static URI createGenericURI(String scheme, String opaquePart, String fragment) {
+        if (scheme == null) {
             throw new IllegalArgumentException("relative non-hierarchical URI");
         }
 
-        if (isArchiveScheme(scheme))
-        {
+        if (isArchiveScheme(scheme)) {
             throw new IllegalArgumentException("non-hierarchical archive URI");
         }
 
@@ -314,15 +295,12 @@ public abstract class URI
      * {@link #validQuery validQuery}, or {@link #validFragment validFragment},
      * respectively.
      */
-    public static URI createHierarchicalURI(String scheme, String authority, String device, String query, String fragment)
-    {
-        if (scheme != null && authority == null && device == null)
-        {
+    public static URI createHierarchicalURI(String scheme, String authority, String device, String query, String fragment) {
+        if (scheme != null && authority == null && device == null) {
             throw new IllegalArgumentException("absolute hierarchical URI without authority, device, path");
         }
 
-        if (isArchiveScheme(scheme))
-        {
+        if (isArchiveScheme(scheme)) {
             throw new IllegalArgumentException("archive URI with no path");
         }
 
@@ -351,16 +329,12 @@ public abstract class URI
      * #validQuery validQuery}, or {@link #validFragment validFragment}, as
      * appropriate.
      */
-    public static URI createHierarchicalURI(String scheme, String authority, String device, String[] segments, String query, String fragment)
-    {
-        if (device != null)
-        {
-            if (isArchiveScheme(scheme))
-            {
+    public static URI createHierarchicalURI(String scheme, String authority, String device, String[] segments, String query, String fragment) {
+        if (device != null) {
+            if (isArchiveScheme(scheme)) {
                 throw new IllegalArgumentException("archive URI with device");
             }
-            if (SCHEME_PLATFORM.equals(scheme))
-            {
+            if (SCHEME_PLATFORM.equals(scheme)) {
                 throw new IllegalArgumentException("platform URI with device");
             }
         }
@@ -381,8 +355,7 @@ public abstract class URI
      * {@link #validSegments validSegments}, {@link #validQuery validQuery}, or
      * {@link #validFragment validFragment}, respectively.
      */
-    public static URI createHierarchicalURI(String[] segments, String query, String fragment)
-    {
+    public static URI createHierarchicalURI(String[] segments, String query, String fragment) {
         return POOL.intern(false, org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_ALL, true, null, null, null, false, segments, query).appendFragment(fragment);
     }
 
@@ -407,8 +380,7 @@ public abstract class URI
      * #validSegments validSegments}, {@link #validQuery validQuery}, or {@link
      * #validFragment validFragment}, as appropriate.
      */
-    public static URI createURI(String uri)
-    {
+    public static URI createURI(String uri) {
         return createURIWithCache(uri);
     }
 
@@ -434,8 +406,7 @@ public abstract class URI
      * #validSegments validSegments}, {@link #validQuery validQuery}, or {@link
      * #validFragment validFragment}, as appropriate.
      */
-    public static URI createURI(String uri, boolean ignoreEscaped)
-    {
+    public static URI createURI(String uri, boolean ignoreEscaped) {
         return createURIWithCache(encodeURI(uri, ignoreEscaped, FRAGMENT_LAST_SEPARATOR));
     }
 
@@ -492,8 +463,7 @@ public abstract class URI
      * #validSegments validSegments}, {@link #validQuery validQuery}, or {@link
      * #validFragment validFragment}, as appropriate.
      */
-    public static URI createURI(String uri, boolean ignoreEscaped, int fragmentLocationStyle)
-    {
+    public static URI createURI(String uri, boolean ignoreEscaped, int fragmentLocationStyle) {
         return createURIWithCache(encodeURI(uri, ignoreEscaped, fragmentLocationStyle));
     }
 
@@ -517,20 +487,19 @@ public abstract class URI
      * device support enabled. The two methods now operate identically.
      */
     @Deprecated
-    public static URI createDeviceURI(String uri)
-    {
+    public static URI createDeviceURI(String uri) {
         return createURIWithCache(uri);
     }
 
     // Uses the URI pool to speed up creation of a URI from a string.
+
     /**
      * This method was included in the public API by mistake.
      *
      * @deprecated Please use {@link #createURI(String) createURI} instead.
      */
     @Deprecated
-    public static URI createURIWithCache(String uri)
-    {
+    public static URI createURIWithCache(String uri) {
         int index = uri.indexOf(FRAGMENT_SEPARATOR);
         return
                 index == -1 ?
@@ -567,8 +536,7 @@ public abstract class URI
      * #validDevice validDevice}, or {@link #validSegments validSegments},
      * {@link #validQuery validQuery}, or {@link #validFragment validFragment}.
      */
-    public static URI createFileURI(String pathName)
-    {
+    public static URI createFileURI(String pathName) {
         return POOL.internFile(pathName);
     }
 
@@ -604,8 +572,7 @@ public abstract class URI
      * @deprecated Use {@link #createPlatformResourceURI(String, boolean)} instead.
      */
     @Deprecated
-    public static URI createPlatformResourceURI(String pathName)
-    {
+    public static URI createPlatformResourceURI(String pathName) {
         return createPlatformResourceURI(pathName, ENCODE_PLATFORM_RESOURCE_URIS);
     }
 
@@ -642,8 +609,7 @@ public abstract class URI
      *
      * @see org.eclipse.core.runtime.Platform#resolve
      */
-    public static URI createPlatformResourceURI(String pathName, boolean encode)
-    {
+    public static URI createPlatformResourceURI(String pathName, boolean encode) {
         return POOL.intern(SEGMENT_RESOURCE, pathName, encode);
     }
 
@@ -680,29 +646,23 @@ public abstract class URI
      * @see org.eclipse.core.runtime.Platform#resolve
      * @since org.eclipse.emf.common 2.3
      */
-    public static URI createPlatformPluginURI(String pathName, boolean encode)
-    {
+    public static URI createPlatformPluginURI(String pathName, boolean encode) {
         return POOL.intern(SEGMENT_PLUGIN, pathName, encode);
     }
 
     // Splits the fragment into a segment sequence if it starts with a /, i.e., if it's used as a fragment path by EMF's resource implementation.
     //
-    protected static CharSequence splitInternFragment(String fragment)
-    {
-        if (fragment.length() > 0 && fragment.charAt(0) == SEGMENT_SEPARATOR)
-        {
+    protected static CharSequence splitInternFragment(String fragment) {
+        if (fragment.length() > 0 && fragment.charAt(0) == SEGMENT_SEPARATOR) {
             return SegmentSequence.create("/", fragment);
-        }
-        else
-        {
+        } else {
             return CommonUtil.intern(fragment);
         }
     }
 
     // Protected constructor for use of pool.
     //
-    protected URI(int hashCode)
-    {
+    protected URI(int hashCode) {
         this.hashCode = hashCode;
     }
 
@@ -712,47 +672,36 @@ public abstract class URI
     // satisfied, themselves.  If a new URI is being constructed out of
     // an existing URI, this need not be called.  Instead, just the new
     // components may be validated individually.
-    protected static boolean validateURI(boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query, String fragment)
-    {
-        if (!validScheme(scheme))
-        {
+    protected static boolean validateURI(boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query, String fragment) {
+        if (!validScheme(scheme)) {
             throw new IllegalArgumentException("invalid scheme: " + scheme);
         }
 
-        if (!hierarchical)
-        {
-            if (!validOpaquePart(authority))
-            {
+        if (!hierarchical) {
+            if (!validOpaquePart(authority)) {
                 throw new IllegalArgumentException("invalid opaquePart: " + authority);
             }
-        }
-        else
-        {
-            if (isArchiveScheme(scheme) ? !validArchiveAuthority(authority) : !validAuthority(authority))
-            {
+        } else {
+            if (isArchiveScheme(scheme) ? !validArchiveAuthority(authority) : !validAuthority(authority)) {
                 throw new IllegalArgumentException("invalid authority: " + authority);
             }
 
-            if (!validSegments(segments))
-            {
+            if (!validSegments(segments)) {
                 String s = segments == null ? "invalid segments: null" :
                         "invalid segment: " + firstInvalidSegment(segments);
                 throw new IllegalArgumentException(s);
             }
         }
 
-        if (!validDevice(device))
-        {
+        if (!validDevice(device)) {
             throw new IllegalArgumentException("invalid device: " + device);
         }
 
-        if (!validQuery(query))
-        {
+        if (!validQuery(query)) {
             throw new IllegalArgumentException("invalid query: " + query);
         }
 
-        if (!validFragment(fragment))
-        {
+        if (!validFragment(fragment)) {
             throw new IllegalArgumentException("invalid fragment: " + fragment);
         }
 
@@ -769,8 +718,7 @@ public abstract class URI
      * <p>A valid scheme may be null or contain any characters except for the
      * following: <code>: / ? #</code>
      */
-    public static boolean validScheme(String value)
-    {
+    public static boolean validScheme(String value) {
         return value == null || !contains(value, MAJOR_SEPARATOR_HI, MAJOR_SEPARATOR_LO);
 
         // <p>A valid scheme may be null, or consist of a single letter followed
@@ -792,8 +740,7 @@ public abstract class URI
      * <code>#</code> character.  In addition, its first character must not be
      * <code>/</code>
      */
-    public static boolean validOpaquePart(String value)
-    {
+    public static boolean validOpaquePart(String value) {
         return value != null && value.indexOf(FRAGMENT_SEPARATOR) == -1 && value.length() > 0 && value.charAt(0) != SEGMENT_SEPARATOR;
 
         // <p>A valid opaque part must be non-null and non-empty. It may contain
@@ -812,8 +759,7 @@ public abstract class URI
      * <p>A valid authority may be null or contain any characters except for
      * the following: <code>/ ? #</code>
      */
-    public static boolean validAuthority(String value)
-    {
+    public static boolean validAuthority(String value) {
         return value == null || !contains(value, SEGMENT_END_HI, SEGMENT_END_LO);
 
         // A valid authority may be null or contain any allowed URI characters except
@@ -831,10 +777,8 @@ public abstract class URI
      * <p>To be valid, the authority, itself, must be a URI with no fragment or query,
      * followed by the character <code>!</code>.
      */
-    public static boolean validArchiveAuthority(String value)
-    {
-        if (value != null && value.length() > 0 && value.charAt(value.length() - 1) == ARCHIVE_IDENTIFIER)
-        {
+    public static boolean validArchiveAuthority(String value) {
+        if (value != null && value.length() > 0 && value.charAt(value.length() - 1) == ARCHIVE_IDENTIFIER) {
             URI archiveURI = createURI(value.substring(0, value.length() - 1));
             return !archiveURI.hasFragment();
         }
@@ -852,8 +796,7 @@ public abstract class URI
      * validArchiveAuthority}.
      */
     @Deprecated
-    public static boolean validJarAuthority(String value)
-    {
+    public static boolean validJarAuthority(String value) {
         return validArchiveAuthority(value);
     }
 
@@ -865,8 +808,7 @@ public abstract class URI
      * except for the following: <code>/ ? #</code>  In addition, its last
      * character must be <code>:</code>
      */
-    public static boolean validDevice(String value)
-    {
+    public static boolean validDevice(String value) {
         if (value == null) return true;
         int len = value.length();
         return len > 0 && value.charAt(len - 1) == DEVICE_IDENTIFIER && !contains(value, SEGMENT_END_HI, SEGMENT_END_LO);
@@ -879,8 +821,7 @@ public abstract class URI
      * <p>A valid path segment must be non-null and not contain any of the
      * following characters: <code>/ ? #</code>
      */
-    public static boolean validSegment(String value)
-    {
+    public static boolean validSegment(String value) {
         return value != null && !contains(value, SEGMENT_END_HI, SEGMENT_END_LO);
 
         // <p>A valid path segment must be non-null and may contain any allowed URI
@@ -896,11 +837,9 @@ public abstract class URI
      * <p>A valid path segment array must be non-null and contain only path
      * segments that are valid according to {@link #validSegment validSegment}.
      */
-    public static boolean validSegments(String[] value)
-    {
+    public static boolean validSegments(String[] value) {
         if (value == null) return false;
-        for (int i = 0, len = value.length; i < len; i++)
-        {
+        for (int i = 0, len = value.length; i < len; i++) {
             if (!validSegment(value[i])) return false;
         }
         return true;
@@ -909,11 +848,9 @@ public abstract class URI
     // Returns null if the specified value is null or would be a valid path
     // segment array of a URI; otherwise, the value of the first invalid
     // segment.
-    protected static String firstInvalidSegment(String[] value)
-    {
+    protected static String firstInvalidSegment(String[] value) {
         if (value == null) return null;
-        for (int i = 0, len = value.length; i < len; i++)
-        {
+        for (int i = 0, len = value.length; i < len; i++) {
             if (!validSegment(value[i])) return value[i];
         }
         return null;
@@ -926,8 +863,7 @@ public abstract class URI
      * <p>A valid query may be null or contain any characters except for
      * <code>#</code>
      */
-    public static boolean validQuery(String value)
-    {
+    public static boolean validQuery(String value) {
         return value == null || value.indexOf(FRAGMENT_SEPARATOR) == -1;
 
         // <p>A valid query may be null or contain any allowed URI characters.
@@ -941,8 +877,7 @@ public abstract class URI
      *
      * <p>A fragment is taken to be unconditionally valid.
      */
-    public static boolean validFragment(String value)
-    {
+    public static boolean validFragment(String value) {
         return true;
 
         // <p>A valid fragment may be null or contain any allowed URI characters.
@@ -953,27 +888,22 @@ public abstract class URI
     // Searches the specified string for any characters in the set represented
     // by the 128-bit bitmask.  Returns true if any occur, or false otherwise.
     //
-    protected static boolean contains(String s, long highBitmask, long lowBitmask)
-    {
-        for (int i = 0, len = s.length(); i < len; i++)
-        {
+    protected static boolean contains(String s, long highBitmask, long lowBitmask) {
+        for (int i = 0, len = s.length(); i < len; i++) {
             if (matches(s.charAt(i), highBitmask, lowBitmask)) return true;
         }
         return false;
     }
 
-    protected void flushCachedString()
-    {
+    protected void flushCachedString() {
         // Do nothing.
     }
 
-    protected void cacheString(String string)
-    {
+    protected void cacheString(String string) {
         // Do nothing.
     }
 
-    protected String getCachedString()
-    {
+    protected String getCachedString() {
         return null;
     }
 
@@ -981,15 +911,13 @@ public abstract class URI
      * Returns <code>true</code> if this is a relative URI, or
      * <code>false</code> if it is an absolute URI.
      */
-    public boolean isRelative()
-    {
+    public boolean isRelative() {
         return false;
     }
 
     // Whether this this URI valid has a base URI against which to resolve.
     //
-    protected boolean isBase()
-    {
+    protected boolean isBase() {
         return false;
     }
 
@@ -997,8 +925,7 @@ public abstract class URI
      * Returns <code>true</code> if this a a hierarchical URI, or
      * <code>false</code> if it is of the generic form.
      */
-    public boolean isHierarchical()
-    {
+    public boolean isHierarchical() {
         return false;
     }
 
@@ -1006,8 +933,7 @@ public abstract class URI
      * Returns <code>true</code> if this is a hierarchical URI with an authority
      * component; <code>false</code> otherwise.
      */
-    public boolean hasAuthority()
-    {
+    public boolean hasAuthority() {
         return false;
     }
 
@@ -1015,8 +941,7 @@ public abstract class URI
      * Returns <code>true</code> if this is a non-hierarchical URI with an
      * opaque part component; <code>false</code> otherwise.
      */
-    public boolean hasOpaquePart()
-    {
+    public boolean hasOpaquePart() {
         // note: hierarchical -> authority != null
         return false;
     }
@@ -1025,14 +950,12 @@ public abstract class URI
      * Returns <code>true</code> if this is a hierarchical URI with a device
      * component; <code>false</code> otherwise.
      */
-    public boolean hasDevice()
-    {
+    public boolean hasDevice() {
         // note: device != null -> hierarchical
         return false;
     }
 
-    protected boolean hasDeviceOrPath()
-    {
+    protected boolean hasDeviceOrPath() {
         return false;
     }
 
@@ -1040,8 +963,7 @@ public abstract class URI
      * Returns <code>true</code> if this is a hierarchical URI with an
      * absolute or relative path; <code>false</code> otherwise.
      */
-    public boolean hasPath()
-    {
+    public boolean hasPath() {
         // note: (absolutePath || authority == null) -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return false;
@@ -1052,8 +974,7 @@ public abstract class URI
      * absolute path, or <code>false</code> if it is non-hierarchical, has no
      * path, or has a relative path.
      */
-    public boolean hasAbsolutePath()
-    {
+    public boolean hasAbsolutePath() {
         // note: absolutePath -> hierarchical
         return false;
     }
@@ -1063,8 +984,7 @@ public abstract class URI
      * path, or <code>false</code> if it is non-hierarchical, has no path, or
      * has an absolute path.
      */
-    public boolean hasRelativePath()
-    {
+    public boolean hasRelativePath() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return false;
@@ -1078,8 +998,7 @@ public abstract class URI
      * URI has any path segments; however, <code>hasRelativePath &&
      * !hasEmptyPath()</code> does.
      */
-    public boolean hasEmptyPath()
-    {
+    public boolean hasEmptyPath() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return false;
@@ -1089,8 +1008,7 @@ public abstract class URI
      * Returns <code>true</code> if this is a hierarchical URI with a query
      * component; <code>false</code> otherwise.
      */
-    public boolean hasQuery()
-    {
+    public boolean hasQuery() {
         // note: query != null -> hierarchical
         return false;
     }
@@ -1099,8 +1017,7 @@ public abstract class URI
      * Returns <code>true</code> if this URI has a fragment component;
      * <code>false</code> otherwise.
      */
-    public boolean hasFragment()
-    {
+    public boolean hasFragment() {
         return false;
     }
 
@@ -1110,8 +1027,7 @@ public abstract class URI
      * query components, and no path segments; <code>false</code> is returned
      * otherwise.
      */
-    public boolean isCurrentDocumentReference()
-    {
+    public boolean isCurrentDocumentReference() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return false;
@@ -1124,8 +1040,7 @@ public abstract class URI
      *
      * @see #isCurrentDocumentReference()
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return false;
@@ -1137,8 +1052,7 @@ public abstract class URI
      * case for a file-scheme absolute URI, or for a relative URI with no query;
      * <code>false</code> is returned otherwise.
      */
-    public boolean isFile()
-    {
+    public boolean isFile() {
         return false;
     }
 
@@ -1148,8 +1062,7 @@ public abstract class URI
      * segments; <code>false</code> is returned otherwise.
      * @since org.eclipse.emf.common 2.3
      */
-    public boolean isPlatform()
-    {
+    public boolean isPlatform() {
         return false;
     }
 
@@ -1160,8 +1073,7 @@ public abstract class URI
      * @see #isPlatform
      * @since org.eclipse.emf.common 2.3
      */
-    public boolean isPlatformResource()
-    {
+    public boolean isPlatformResource() {
         return false;
     }
 
@@ -1172,8 +1084,7 @@ public abstract class URI
      * @see #isPlatform
      * @since org.eclipse.emf.common 2.3
      */
-    public boolean isPlatformPlugin()
-    {
+    public boolean isPlatformPlugin() {
         return false;
     }
 
@@ -1182,8 +1093,7 @@ public abstract class URI
      * hierarchical, with an authority (consisting of an absolute URI followed
      * by "!"), no device, and an absolute path.
      */
-    public boolean isArchive()
-    {
+    public boolean isArchive() {
         return false;
     }
 
@@ -1193,15 +1103,12 @@ public abstract class URI
      * href="#archive_explanation">archive URI</a>; <code>false</code>
      * otherwise.
      */
-    public static boolean isArchiveScheme(String value)
-    {
+    public static boolean isArchiveScheme(String value) {
         // Returns true if the given value is an archive scheme, as defined by
         // the URI.archiveSchemes system property.
         // By default, "jar", "zip", and "archive" are considered archives.
-        for (String scheme : ARCHIVE_SCHEMES)
-        {
-            if (scheme.equals(value))
-            {
+        for (String scheme : ARCHIVE_SCHEMES) {
+            if (scheme.equals(value)) {
                 return true;
             }
         }
@@ -1212,21 +1119,18 @@ public abstract class URI
      Returns the hash code.
      */
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return hashCode;
     }
 
     // Tests whether this URI's path segment array is equal to that of the given uri.
-    protected boolean segmentsEqual(URI uri)
-    {
+    protected boolean segmentsEqual(URI uri) {
         return false;
     }
 
     // Tests two objects for equality, tolerating nulls; null is considered
     // to be a valid value that is only equal to itself.
-    protected static boolean equals(Object o1, Object o2)
-    {
+    protected static boolean equals(Object o1, Object o2) {
         return o1 == o2 || o1 != null && o1.equals(o2);
     }
 
@@ -1234,8 +1138,7 @@ public abstract class URI
      * If this is an absolute URI, returns the scheme component;
      * <code>null</code> otherwise.
      */
-    public String scheme()
-    {
+    public String scheme() {
         return null;
     }
 
@@ -1243,8 +1146,7 @@ public abstract class URI
      * If this is a non-hierarchical URI, returns the opaque part component;
      * <code>null</code> otherwise.
      */
-    public String opaquePart()
-    {
+    public String opaquePart() {
         return null;
     }
 
@@ -1252,8 +1154,7 @@ public abstract class URI
      * If this is a hierarchical URI with an authority component, returns it;
      * <code>null</code> otherwise.
      */
-    public String authority()
-    {
+    public String authority() {
         return null;
     }
 
@@ -1261,8 +1162,7 @@ public abstract class URI
      * If this is a hierarchical URI with an authority component that has a
      * user info portion, returns it; <code>null</code> otherwise.
      */
-    public String userInfo()
-    {
+    public String userInfo() {
         return null;
     }
 
@@ -1270,8 +1170,7 @@ public abstract class URI
      * If this is a hierarchical URI with an authority component that has a
      * host portion, returns it; <code>null</code> otherwise.
      */
-    public String host()
-    {
+    public String host() {
         return null;
     }
 
@@ -1279,8 +1178,7 @@ public abstract class URI
      * If this is a hierarchical URI with an authority component that has a
      * port portion, returns it; <code>null</code> otherwise.
      */
-    public String port()
-    {
+    public String port() {
         return null;
     }
 
@@ -1288,8 +1186,7 @@ public abstract class URI
      * If this is a hierarchical URI with a device component, returns it;
      * <code>null</code> otherwise.
      */
-    public String device()
-    {
+    public String device() {
         return null;
     }
 
@@ -1300,15 +1197,13 @@ public abstract class URI
      * trailing separator is represented by an empty-string segment as the
      * final element.
      */
-    public String[] segments()
-    {
+    public String[] segments() {
         return NO_SEGMENTS;
     }
 
     // Directly returns the underlying segments without cloning them.
     //
-    protected String[] rawSegments()
-    {
+    protected String[] rawSegments() {
         return NO_SEGMENTS;
     }
 
@@ -1316,8 +1211,7 @@ public abstract class URI
      * Returns an unmodifiable list containing the same segments as the array
      * returned by {@link #segments segments}.
      */
-    public List<String> segmentsList()
-    {
+    public List<String> segmentsList() {
         return Collections.emptyList();
     }
 
@@ -1325,8 +1219,7 @@ public abstract class URI
      * Returns the number of elements in the segment array that would be
      * returned by {@link #segments segments}.
      */
-    public int segmentCount()
-    {
+    public int segmentCount() {
         return 0;
     }
 
@@ -1337,16 +1230,14 @@ public abstract class URI
      * @exception java.lang.IndexOutOfBoundsException if <code>i < 0</code> or
      * <code>i >= segmentCount()</code>.
      */
-    public String segment(int i)
-    {
+    public String segment(int i) {
         throw new IndexOutOfBoundsException("No such segment: " + i);
     }
 
     /**
      * Returns the last segment in the segment array, or <code>null</code>.
      */
-    public String lastSegment()
-    {
+    public String lastSegment() {
         return null;
     }
 
@@ -1358,8 +1249,7 @@ public abstract class URI
      * this URI has a separate <a href="#device_explanation">device
      * component</a>, it is <em>not</em> included in the path.
      */
-    public String path()
-    {
+    public String path() {
         return null;
     }
 
@@ -1381,8 +1271,7 @@ public abstract class URI
      * <pre>
      *   authority/pathSegment1/pathSegment2...</pre>
      */
-    public String devicePath()
-    {
+    public String devicePath() {
         return null;
     }
 
@@ -1390,8 +1279,7 @@ public abstract class URI
      * If this is a hierarchical URI with a query component, returns it;
      * <code>null</code> otherwise.
      */
-    public String query()
-    {
+    public String query() {
         return null;
     }
 
@@ -1402,10 +1290,8 @@ public abstract class URI
      * <code>query</code> is not a valid query (portion) according
      * to {@link #validQuery validQuery}.
      */
-    public URI appendQuery(String query)
-    {
-        if (!validQuery(query))
-        {
+    public URI appendQuery(String query) {
+        if (!validQuery(query)) {
             throw new IllegalArgumentException("invalid query portion: " + query);
         }
         return this;
@@ -1415,39 +1301,33 @@ public abstract class URI
      * If this URI has a non-null {@link #query query}, returns the URI
      * formed by removing it; this URI unchanged, otherwise.
      */
-    public URI trimQuery()
-    {
+    public URI trimQuery() {
         return this;
     }
 
     /**
      * If this URI has a fragment component, returns it; <code>null</code> otherwise.
      */
-    public String fragment()
-    {
+    public String fragment() {
         return null;
     }
 
     /**
      * A weak reference for the external queue that when cleared will
      */
-    private static class LazyFragmentInitializer extends WeakReference<Fragment>
-    {
+    private static class LazyFragmentInitializer extends WeakReference<Fragment> {
         protected final String fragment;
 
-        public LazyFragmentInitializer(Fragment uri, ReferenceQueue<? super URI> queue, String fragment)
-        {
+        public LazyFragmentInitializer(Fragment uri, ReferenceQueue<? super URI> queue, String fragment) {
             super(uri, queue);
             this.fragment = fragment;
             enqueue();
         }
 
         @Override
-        public void clear()
-        {
+        public void clear() {
             Fragment uri = get();
-            if (uri != null)
-            {
+            if (uri != null) {
                 uri.fragment = splitInternFragment(fragment);
                 uri.hashCode = (uri.uri.hashCode * 31 + FRAGMENT_SEPARATOR) * CommonUtil.powerOf31(fragment.length()) + uri.fragment.hashCode();
             }
@@ -1461,22 +1341,15 @@ public abstract class URI
      * <code>fragment</code> is not a valid fragment (portion) according
      * to {@link #validFragment validFragment}.
      */
-    public URI appendFragment(String fragment)
-    {
-        if (fragment == null)
-        {
+    public URI appendFragment(String fragment) {
+        if (fragment == null) {
             return this;
-        }
-        else
-        {
-            if (POOL.externalQueue != null)
-            {
+        } else {
+            if (POOL.externalQueue != null) {
                 final Fragment result = new Fragment(0, this, fragment);
                 new LazyFragmentInitializer(result, POOL.externalQueue, fragment);
                 return result;
-            }
-            else
-            {
+            } else {
                 int hashCode = (this.hashCode * 31 + FRAGMENT_SEPARATOR) * CommonUtil.powerOf31(fragment.length()) + fragment.hashCode();
                 return new Fragment(hashCode, this, splitInternFragment(fragment));
             }
@@ -1485,14 +1358,10 @@ public abstract class URI
 
     // Returns the URI formed from this uri and the already properly interned fragment representation.
     //
-    protected URI rawAppendFragment(CharSequence fragment)
-    {
-        if (fragment == null)
-        {
+    protected URI rawAppendFragment(CharSequence fragment) {
+        if (fragment == null) {
             return this;
-        }
-        else
-        {
+        } else {
             int hashCode = (this.hashCode * 31 + FRAGMENT_SEPARATOR) * CommonUtil.powerOf31(fragment.length()) + fragment.hashCode();
             return new Fragment(hashCode, this, fragment);
         }
@@ -1502,8 +1371,7 @@ public abstract class URI
      * If this URI has a non-null {@link #fragment fragment}, returns the URI
      * formed by removing it; this URI unchanged, otherwise.
      */
-    public URI trimFragment()
-    {
+    public URI trimFragment() {
         return this;
     }
 
@@ -1525,8 +1393,7 @@ public abstract class URI
      * @exception java.lang.IllegalArgumentException if <code>base</code> is
      * non-hierarchical or is relative.
      */
-    public URI resolve(URI base)
-    {
+    public URI resolve(URI base) {
         return resolve(base, true);
     }
 
@@ -1550,10 +1417,8 @@ public abstract class URI
      * @exception java.lang.IllegalArgumentException if <code>base</code> is
      * non-hierarchical or is relative.
      */
-    public URI resolve(URI base, boolean preserveRootParents)
-    {
-        if (!base.isHierarchical() || base.isRelative())
-        {
+    public URI resolve(URI base, boolean preserveRootParents) {
+        if (!base.isHierarchical() || base.isRelative()) {
             throw new IllegalArgumentException(
                     "resolve against non-hierarchical or relative base");
         }
@@ -1568,8 +1433,7 @@ public abstract class URI
      * or <code>this</code> is non-hierarchical or is relative,
      * <code>this</code> will be returned.
      */
-    public URI deresolve(URI base)
-    {
+    public URI deresolve(URI base) {
         return deresolve(base, true, false, true);
     }
 
@@ -1592,34 +1456,29 @@ public abstract class URI
      * of segments) than the absolute path.  If both <code>anyRelPath</code>
      * and this parameter are <code>false</code>, it will be absolute.
      */
-    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath)
-    {
+    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath) {
         return this;
     }
 
-    protected String[] collapseSegments(boolean preserveRootParents)
-    {
+    protected String[] collapseSegments(boolean preserveRootParents) {
         return NO_SEGMENTS;
     }
 
     // Returns whether the string representation of the URI fully matches the given string.
     //
-    protected boolean matches(String string)
-    {
+    protected boolean matches(String string) {
         return false;
     }
 
     // Used to match a URI against the specified components.
     //
-    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
-    {
+    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query) {
         return false;
     }
 
     // Used to match a platform URI composed from these two components.
     //
-    protected boolean matches(String base, String path)
-    {
+    protected boolean matches(String base, String path) {
         return false;
     }
 
@@ -1639,8 +1498,7 @@ public abstract class URI
      * <p>However, the character used as a separator is system-dependent and
      * obtained from {@link java.io.File#separatorChar}.
      */
-    public String toFileString()
-    {
+    public String toFileString() {
         return null;
     }
 
@@ -1652,8 +1510,7 @@ public abstract class URI
      * @see #createPlatformPluginURI
      * @since org.eclipse.emf.common 2.3
      */
-    public String toPlatformString(boolean decode)
-    {
+    public String toPlatformString(boolean decode) {
         return null;
     }
 
@@ -1666,10 +1523,8 @@ public abstract class URI
      * @exception java.lang.IllegalArgumentException if <code>segment</code>
      * is not a valid segment according to {@link #validSegment}.
      */
-    public URI appendSegment(String segment)
-    {
-        if (!validSegment(segment))
-        {
+    public URI appendSegment(String segment) {
+        if (!validSegment(segment)) {
             throw new IllegalArgumentException("invalid segment: " + segment);
         }
 
@@ -1690,10 +1545,8 @@ public abstract class URI
      * @exception java.lang.IllegalArgumentException if <code>segments</code>
      * is not a valid segment array according to {@link #validSegments}.
      */
-    public URI appendSegments(String[] segments)
-    {
-        if (!validSegments(segments))
-        {
+    public URI appendSegments(String[] segments) {
+        if (!validSegments(segments)) {
             String s = segments == null ? "invalid segments: null" : "invalid segment: " + firstInvalidSegment(segments);
             throw new IllegalArgumentException(s);
         }
@@ -1715,8 +1568,7 @@ public abstract class URI
      * than the number of segments in this URI's path, all segments are
      * trimmed.
      */
-    public URI trimSegments(int i)
-    {
+    public URI trimSegments(int i) {
         return this;
     }
 
@@ -1728,8 +1580,7 @@ public abstract class URI
      * last segment in the path; note that this definition does <em>not</em>
      * include the lone separator in the root absolute path.
      */
-    public boolean hasTrailingPathSeparator()
-    {
+    public boolean hasTrailingPathSeparator() {
         return false;
     }
 
@@ -1742,8 +1593,7 @@ public abstract class URI
      * there to be no file extension.  If the final segment ends in a period,
      * then the file extension is an empty string.
      */
-    public String fileExtension()
-    {
+    public String fileExtension() {
         return null;
     }
 
@@ -1760,10 +1610,8 @@ public abstract class URI
      * <code>fileExtension</code> is not a valid segment (portion) according
      * to {@link #validSegment}.
      */
-    public URI appendFileExtension(String fileExtension)
-    {
-        if (!validSegment(fileExtension))
-        {
+    public URI appendFileExtension(String fileExtension) {
+        if (!validSegment(fileExtension)) {
             throw new IllegalArgumentException("invalid segment portion: " + fileExtension);
         }
 
@@ -1774,8 +1622,7 @@ public abstract class URI
      * If this URI has a non-null {@link #fileExtension fileExtension},
      * returns the URI formed by removing it; this URI unchanged, otherwise.
      */
-    public URI trimFileExtension()
-    {
+    public URI trimFileExtension() {
         return this;
     }
 
@@ -1785,8 +1632,7 @@ public abstract class URI
      * absolute path, and has no query and no fragment; <code>false</code>
      * is returned otherwise.
      */
-    public boolean isPrefix()
-    {
+    public boolean isPrefix() {
         return false;
     }
 
@@ -1804,10 +1650,8 @@ public abstract class URI
      * <code>oldPrefix</code> or <code>newPrefix</code> is not a prefix URI
      * according to {@link #isPrefix}.
      */
-    public URI replacePrefix(URI oldPrefix, URI newPrefix)
-    {
-        if (!oldPrefix.isPrefix() || !newPrefix.isPrefix())
-        {
+    public URI replacePrefix(URI oldPrefix, URI newPrefix) {
+        if (!oldPrefix.isPrefix() || !newPrefix.isPrefix()) {
             String which = oldPrefix.isPrefix() ? "new" : "old";
             throw new IllegalArgumentException("non-prefix " + which + " value");
         }
@@ -1826,8 +1670,7 @@ public abstract class URI
      * if a <code>%</code> is not followed by 2 hex digits, it will always be
      * escaped.
      */
-    public static String encodeOpaquePart(String value, boolean ignoreEscaped)
-    {
+    public static String encodeOpaquePart(String value, boolean ignoreEscaped) {
         String result = encode(value, URIC_HI, URIC_LO, ignoreEscaped);
         return
                 result != null && result.length() > 0 && result.charAt(0) == SEGMENT_SEPARATOR ? "%2F" + result.substring(1) : result;
@@ -1844,8 +1687,7 @@ public abstract class URI
      * if a <code>%</code> is not followed by 2 hex digits, it will always be
      * escaped.
      */
-    public static String encodeAuthority(String value, boolean ignoreEscaped)
-    {
+    public static String encodeAuthority(String value, boolean ignoreEscaped) {
         return encode(value, SEGMENT_CHAR_HI, SEGMENT_CHAR_LO, ignoreEscaped);
     }
 
@@ -1860,8 +1702,7 @@ public abstract class URI
      * if a <code>%</code> is not followed by 2 hex digits, it will always be
      * escaped.
      */
-    public static String encodeSegment(String value, boolean ignoreEscaped)
-    {
+    public static String encodeSegment(String value, boolean ignoreEscaped) {
         return encode(value, SEGMENT_CHAR_HI, SEGMENT_CHAR_LO, ignoreEscaped);
     }
 
@@ -1875,8 +1716,7 @@ public abstract class URI
      * if a <code>%</code> is not followed by 2 hex digits, it will always be
      * escaped.
      */
-    public static String encodeQuery(String value, boolean ignoreEscaped)
-    {
+    public static String encodeQuery(String value, boolean ignoreEscaped) {
         return encode(value, URIC_HI, URIC_LO, ignoreEscaped);
     }
 
@@ -1891,23 +1731,20 @@ public abstract class URI
      * if a <code>%</code> is not followed by 2 hex digits, it will always be
      * escaped.
      */
-    public static String encodeFragment(String value, boolean ignoreEscaped)
-    {
+    public static String encodeFragment(String value, boolean ignoreEscaped) {
         return encode(value, URIC_HI, URIC_LO, ignoreEscaped);
     }
 
     // Encodes a complete URI, optionally leaving % characters unescaped when
     // beginning a valid three-character escape sequence.  We can either treat
     // the first or # as a fragment separator, or encode them all.
-    protected static String encodeURI(String uri, boolean ignoreEscaped, int fragmentLocationStyle)
-    {
+    protected static String encodeURI(String uri, boolean ignoreEscaped, int fragmentLocationStyle) {
         if (uri == null) return null;
 
         StringBuffer result = new StringBuffer();
 
         int i = uri.indexOf(SCHEME_SEPARATOR);
-        if (i != -1)
-        {
+        if (i != -1) {
             String scheme = uri.substring(0, i);
             result.append(scheme);
             result.append(SCHEME_SEPARATOR);
@@ -1920,17 +1757,14 @@ public abstract class URI
                                 uri.lastIndexOf(FRAGMENT_SEPARATOR) :
                                 -1;
 
-        if (j != -1)
-        {
+        if (j != -1) {
             String sspart = uri.substring(++i, j);
             result.append(encode(sspart, URIC_HI, URIC_LO, ignoreEscaped));
             result.append(FRAGMENT_SEPARATOR);
 
             String fragment = uri.substring(++j);
             result.append(encode(fragment, URIC_HI, URIC_LO, ignoreEscaped));
-        }
-        else
-        {
+        } else {
             String sspart = uri.substring(++i);
             result.append(encode(sspart, URIC_HI, URIC_LO, ignoreEscaped));
         }
@@ -1943,26 +1777,20 @@ public abstract class URI
     // below 0xA0 by an escape sequence of % followed by two hex digits.  If
     // % is not in the set but ignoreEscaped is true, then % will not be encoded
     // iff it already begins a valid escape sequence.
-    protected static String encode(String value, long highBitmask, long lowBitmask, boolean ignoreEscaped)
-    {
+    protected static String encode(String value, long highBitmask, long lowBitmask, boolean ignoreEscaped) {
         if (value == null) return null;
 
         StringBuffer result = null;
 
-        for (int i = 0, len = value.length(); i < len; i++)
-        {
+        for (int i = 0, len = value.length(); i < len; i++) {
             char c = value.charAt(i);
 
-            if (!matches(c, highBitmask, lowBitmask) && c < 160 && (!ignoreEscaped || !isEscaped(value, i)))
-            {
-                if (result == null)
-                {
+            if (!matches(c, highBitmask, lowBitmask) && c < 160 && (!ignoreEscaped || !isEscaped(value, i))) {
+                if (result == null) {
                     result = new StringBuffer(value.substring(0, i));
                 }
-                appendEscaped(result, (byte)c);
-            }
-            else if (result != null)
-            {
+                appendEscaped(result, (byte) c);
+            } else if (result != null) {
                 result.append(c);
             }
         }
@@ -1971,16 +1799,14 @@ public abstract class URI
 
     // Tests whether an escape occurs in the given string, starting at index i.
     // An escape sequence is a % followed by two hex digits.
-    protected static boolean isEscaped(String s, int i)
-    {
+    protected static boolean isEscaped(String s, int i) {
         return s.charAt(i) == ESCAPE && s.length() > i + 2 && matches(s.charAt(i + 1), HEX_HI, HEX_LO) && matches(s.charAt(i + 2), HEX_HI, HEX_LO);
     }
 
     // Computes a three-character escape sequence for the byte, appending
     // it to the StringBuffer.  Only characters up to 0xFF should be escaped;
     // all but the least significant byte will be ignored.
-    protected static void appendEscaped(StringBuffer result, byte b)
-    {
+    protected static void appendEscaped(StringBuffer result, byte b) {
         result.append(ESCAPE);
 
         // The byte is automatically widened into an int, with sign extension,
@@ -1992,103 +1818,85 @@ public abstract class URI
     }
 
     /**
-     * Decodes the given string by interpreting three-digit escape sequences as the bytes of a UTF-8 encoded character
+     * Decodes the given string by interpreting three-digit escape sequences as
+     * the bytes of a UTF-8 encoded character
      * and replacing them with the characters they represent.
-     * Incomplete escape sequences are ignored and invalid UTF-8 encoded bytes are treated as extended ASCII characters.
+     * Incomplete escape sequences are ignored and invalid UTF-8 encoded bytes
+     * are treated as extended ASCII characters.
      */
-    public static String decode(String value)
-    {
+    public static String decode(String value) {
         if (value == null) return null;
 
         int i = value.indexOf('%');
-        if (i < 0)
-        {
+        if (i < 0) {
             return value;
-        }
-        else
-        {
+        } else {
             StringBuilder result = new StringBuilder(value.substring(0, i));
-            byte [] bytes = new byte[4];
+            byte[] bytes = new byte[4];
             int receivedBytes = 0;
             int expectedBytes = 0;
-            for (int len = value.length(); i < len; i++)
-            {
-                if (isEscaped(value, i))
-                {
-                    char character = unescape(value.charAt(i + 1), value.charAt(i + 2));
+            for (int len = value.length(); i < len; i++) {
+                if (isEscaped(value, i)) {
+                    char character =
+                            unescape(value.charAt(i + 1), value.charAt(i + 2));
                     i += 2;
 
-                    if (expectedBytes > 0)
-                    {
-                        if ((character & 0xC0) == 0x80)
-                        {System.out.println("1.1.1");
-                            bytes[receivedBytes++] = (byte)character;
-                        }
-                        else
-                        {
+                    if (expectedBytes > 0) {
+                        if ((character & 0xC0) == 0x80) {
+                            System.out.println("1.1.1");
+                            bytes[receivedBytes++] = (byte) character;
+                        } else {
                             expectedBytes = 0;
                         }
-                    }
-                    else if (character >= 0x80)
-                    {
-                        if ((character & 0xE0) == 0xC0)
-                        {
-                            bytes[receivedBytes++] = (byte)character;
+                    } else if (character >= 0x80) {
+                        if ((character & 0xE0) == 0xC0) {
+                            bytes[receivedBytes++] = (byte) character;
                             expectedBytes = 2;
-                        }
-                        else if ((character & 0xF0) == 0xE0)
-                        {
-                            bytes[receivedBytes++] = (byte)character;
+                        } else if ((character & 0xF0) == 0xE0) {
+                            bytes[receivedBytes++] = (byte) character;
                             expectedBytes = 3;
-                        }
-                        else if ((character & 0xF8) == 0xF0)
-                        {
-                            bytes[receivedBytes++] = (byte)character;
+                        } else if ((character & 0xF8) == 0xF0) {
+                            bytes[receivedBytes++] = (byte) character;
                             expectedBytes = 4;
                         }
                     }
 
-                    if (expectedBytes > 0)
-                    {
-                        if (receivedBytes == expectedBytes)
-                        {
-                            switch (receivedBytes)
-                            {
-                                case 2:
-                                {
-                                    result.append((char)((bytes[0] & 0x1F) << 6 | bytes[1] & 0x3F));
+                    if (expectedBytes > 0) {
+                        if (receivedBytes == expectedBytes) {
+                            switch (receivedBytes) {
+                                case 2: {
+                                    result.append((char) ((bytes[0] & 0x1F) <<
+                                            6 | bytes[1] & 0x3F));
                                     break;
                                 }
-                                case 3:
-                                {
-                                    result.append((char)((bytes[0] & 0xF) << 12 | (bytes[1] & 0X3F) << 6 | bytes[2] & 0x3F));
+                                case 3: {
+                                    result.append((char) ((bytes[0] & 0xF) << 12
+                                            | (bytes[1] & 0X3F) << 6 | bytes[2]
+                                            & 0x3F));
                                     break;
                                 }
-                                case 4:
-                                {
-                                    result.appendCodePoint((bytes[0] & 0x7) << 18 | (bytes[1] & 0X3F) << 12 | (bytes[2] & 0X3F) << 6 | bytes[3] & 0x3F);
+                                case 4: {
+                                    result.appendCodePoint((bytes[0] & 0x7) << 18
+                                            | (bytes[1] & 0X3F) << 12 |
+                                            (bytes[2] & 0X3F) << 6 |
+                                            bytes[3] & 0x3F);
                                     break;
                                 }
                             }
                             receivedBytes = 0;
                             expectedBytes = 0;
                         }
-                    }
-                    else
-                    {
-                        for (int j = 0; j < receivedBytes; ++j)
-                        {System.out.println("1.4.for");
-                            result.append((char)bytes[j]);
+                    } else {
+                        for (int j = 0; j < receivedBytes; ++j) {
+                            System.out.println("1.4.for");
+                            result.append((char) bytes[j]);
                         }
                         receivedBytes = 0;
                         result.append(character);
                     }
-                }
-                else
-                {
-                    for (int j = 0; j < receivedBytes; ++j)
-                    {
-                        result.append((char)bytes[j]);
+                } else {
+                    for (int j = 0; j < receivedBytes; ++j) {
+                        result.append((char) bytes[j]);
                     }
                     receivedBytes = 0;
                     result.append(value.charAt(i));
@@ -2101,30 +1909,21 @@ public abstract class URI
     // Returns the character encoded by % followed by the two given hex digits,
     // which is always 0xFF or less, so can safely be casted to a byte.  If
     // either character is not a hex digit, a bogus result will be returned.
-    protected static char unescape(char highHexDigit, char lowHexDigit)
-    {
-        return (char)((valueOf(highHexDigit) << 4) | valueOf(lowHexDigit));
+    protected static char unescape(char highHexDigit, char lowHexDigit) {
+        return (char) ((valueOf(highHexDigit) << 4) | valueOf(lowHexDigit));
     }
 
     // Returns the int value of the given hex digit.
-    protected static int valueOf(char hexDigit)
-    {
-        if (hexDigit <= '9')
-        {
-            if (hexDigit >= '0')
-            {
+    protected static int valueOf(char hexDigit) {
+        if (hexDigit <= '9') {
+            if (hexDigit >= '0') {
                 return hexDigit - '0';
             }
-        }
-        else if (hexDigit <= 'F')
-        {
-            if (hexDigit >= 'A')
-            {
+        } else if (hexDigit <= 'F') {
+            if (hexDigit >= 'A') {
                 return hexDigit - 'A' + 10;
             }
-        }
-        else if (hexDigit >= 'a' && hexDigit <= 'f')
-        {
+        } else if (hexDigit >= 'a' && hexDigit <= 'f') {
             return hexDigit - 'a' + 10;
         }
 

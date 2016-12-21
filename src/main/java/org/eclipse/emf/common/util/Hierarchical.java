@@ -11,62 +11,61 @@ import static org.eclipse.emf.common.util.CONSTANT.*;
 /**
  * A subclass for representing a hierarchical URI.
  */
-final class Hierarchical extends URI
-{
+final class Hierarchical extends URI {
     /**
      * The {@link #flags} bit for representing {@link URI#hasAbsolutePath()}.
      */
-    protected static final int HAS_ABSOLUTE_PATH               = 1 << 0;
+    protected static final int HAS_ABSOLUTE_PATH = 1 << 0;
 
     /**
      * The {@link #flags} bit for representing {@link URI#hasRelativePath()}.
      */
-    protected static final int HAS_RELATIVE_PATH               = 1 << 1;
+    protected static final int HAS_RELATIVE_PATH = 1 << 1;
 
     /**
      * The {@link #flags} bit for representing {@link URI#hasEmptyPath()}.
      */
-    protected static final int HAS_EMPTY_PATH                  = 1 << 2;
+    protected static final int HAS_EMPTY_PATH = 1 << 2;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isCurrentDocumentReference()}.
      */
-    protected static final int IS_CURRENT_DOCUMENT_REFERENCE   = 1 << 3;
+    protected static final int IS_CURRENT_DOCUMENT_REFERENCE = 1 << 3;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isFile()}.
      */
-    protected static final int IS_FILE                         = 1 << 4;
+    protected static final int IS_FILE = 1 << 4;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isPlatform()}.
      */
-    protected static final int IS_PLATFORM                     = 1 << 5;
+    protected static final int IS_PLATFORM = 1 << 5;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isPlatformResource()}.
      */
-    protected static final int IS_PLATFORM_RESOURCE            = 1 << 6;
+    protected static final int IS_PLATFORM_RESOURCE = 1 << 6;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isPlatformPlugin()}.
      */
-    protected static final int IS_PLATFORM_PLUGIN              = 1 << 7;
+    protected static final int IS_PLATFORM_PLUGIN = 1 << 7;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isArchive()}.
      */
-    protected static final int IS_ARCHIVE                      = 1 << 8;
+    protected static final int IS_ARCHIVE = 1 << 8;
 
     /**
      * The {@link #flags} bit for representing {@link URI#hasTrailingPathSeparator()}.
      */
-    protected static final int HAS_TRAILING_PATH_SEPARATOR     = 1 << 9;
+    protected static final int HAS_TRAILING_PATH_SEPARATOR = 1 << 9;
 
     /**
      * The {@link #flags} bit for representing {@link URI#isPrefix()}.
      */
-    protected static final int IS_PREFIX                       = 1 << 10;
+    protected static final int IS_PREFIX = 1 << 10;
 
     /**
      * The {@link #flags} bits for representing {@link URI#hasPath()}.
@@ -113,61 +112,42 @@ final class Hierarchical extends URI
      * Assertions are used to validate the integrity of the result.
      * I.e., all components must be interned and the hash code must be equal to the hash code of the {@link #toString()}.
      */
-    protected Hierarchical(int hashCode, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
-    {
+    protected Hierarchical(int hashCode, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query) {
         super(hashCode);
 
         int flags = 0;
-        if (absolutePath)
-        {
+        if (absolutePath) {
             flags |= HAS_ABSOLUTE_PATH;
-        }
-        else if (device == null && authority == null)
-        {
+        } else if (device == null && authority == null) {
             flags |= HAS_RELATIVE_PATH;
-            if (segments == NO_SEGMENTS)
-            {
+            if (segments == NO_SEGMENTS) {
                 flags |= HAS_EMPTY_PATH;
-                if (query == null)
-                {
+                if (query == null) {
                     flags |= IS_CURRENT_DOCUMENT_REFERENCE;
                 }
             }
 
-            if (query == null)
-            {
+            if (query == null) {
                 flags |= IS_FILE;
             }
         }
 
-        if (scheme != null)
-        {
-            if (scheme == SCHEME_FILE)
-            {
+        if (scheme != null) {
+            if (scheme == SCHEME_FILE) {
                 flags |= IS_FILE;
-            }
-            else if (scheme == SCHEME_PLATFORM)
-            {
-                if (authority == null && device == null && segments.length >= 2)
-                {
+            } else if (scheme == SCHEME_PLATFORM) {
+                if (authority == null && device == null && segments.length >= 2) {
                     flags |= IS_PLATFORM;
                     String firstSegment = segments[0];
-                    if (firstSegment == SEGMENT_RESOURCE)
-                    {
+                    if (firstSegment == SEGMENT_RESOURCE) {
                         flags |= IS_PLATFORM_RESOURCE;
-                    }
-                    else if (firstSegment == SEGMENT_PLUGIN)
-                    {
+                    } else if (firstSegment == SEGMENT_PLUGIN) {
                         flags |= IS_PLATFORM_PLUGIN;
                     }
                 }
-            }
-            else
-            {
-                for (String archiveScheme : ARCHIVE_SCHEMES)
-                {
-                    if (scheme == archiveScheme)
-                    {
+            } else {
+                for (String archiveScheme : ARCHIVE_SCHEMES) {
+                    if (scheme == archiveScheme) {
                         flags |= IS_ARCHIVE;
                         break;
                     }
@@ -175,18 +155,13 @@ final class Hierarchical extends URI
             }
         }
 
-        if (segments == NO_SEGMENTS)
-        {
-            if (absolutePath && query == null)
-            {
+        if (segments == NO_SEGMENTS) {
+            if (absolutePath && query == null) {
                 flags |= IS_PREFIX;
             }
-        }
-        else if (segments[segments.length - 1] == SEGMENT_EMPTY)
-        {
+        } else if (segments[segments.length - 1] == SEGMENT_EMPTY) {
             flags |= HAS_TRAILING_PATH_SEPARATOR;
-            if (query == null)
-            {
+            if (query == null) {
                 flags |= IS_PREFIX;
             }
         }
@@ -228,153 +203,130 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public boolean isRelative()
-    {
+    public boolean isRelative() {
         return scheme == null;
     }
 
     @Override
-    protected boolean isBase()
-    {
+    protected boolean isBase() {
         return scheme != null;
     }
 
     @Override
-    public boolean isHierarchical()
-    {
+    public boolean isHierarchical() {
         return true;
     }
 
     @Override
-    public boolean hasAuthority()
-    {
+    public boolean hasAuthority() {
         return authority != null;
     }
 
     @Override
-    public boolean hasDevice()
-    {
+    public boolean hasDevice() {
         return device != null;
     }
 
     @Override
-    public boolean hasPath()
-    {
+    public boolean hasPath() {
         // note: (absolutePath || authority == null) -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return (flags & HAS_PATH) != 0;
     }
 
     @Override
-    protected boolean hasDeviceOrPath()
-    {
+    protected boolean hasDeviceOrPath() {
         return (flags & HAS_PATH) != 0 || device != null;
     }
 
     @Override
-    public boolean hasAbsolutePath()
-    {
+    public boolean hasAbsolutePath() {
         // note: absolutePath -> hierarchical
         return (flags & HAS_ABSOLUTE_PATH) != 0;
     }
 
     @Override
-    public boolean hasRelativePath()
-    {
+    public boolean hasRelativePath() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return (flags & HAS_RELATIVE_PATH) != 0;
     }
 
     @Override
-    public boolean hasEmptyPath()
-    {
+    public boolean hasEmptyPath() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return (flags & HAS_EMPTY_PATH) != 0;
     }
 
     @Override
-    public boolean hasQuery()
-    {
+    public boolean hasQuery() {
         // note: query != null -> hierarchical
         return query != null;
     }
 
     @Override
-    public boolean isCurrentDocumentReference()
-    {
+    public boolean isCurrentDocumentReference() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return (flags & IS_CURRENT_DOCUMENT_REFERENCE) != 0;
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         // note: authority == null -> hierarchical
         // (authority == null && device == null && !absolutePath) -> scheme == null
         return (flags & IS_CURRENT_DOCUMENT_REFERENCE) != 0;
     }
 
     @Override
-    public boolean isFile()
-    {
+    public boolean isFile() {
         return (flags & IS_FILE) != 0;
     }
 
     @Override
-    public boolean isPlatform()
-    {
+    public boolean isPlatform() {
         return (flags & IS_PLATFORM) != 0;
     }
 
     @Override
-    public boolean isPlatformResource()
-    {
+    public boolean isPlatformResource() {
         return (flags & IS_PLATFORM_RESOURCE) != 0;
     }
 
     @Override
-    public boolean isPlatformPlugin()
-    {
+    public boolean isPlatformPlugin() {
         return (flags & IS_PLATFORM_PLUGIN) != 0;
     }
 
     @Override
-    public boolean isArchive()
-    {
+    public boolean isArchive() {
         return (flags & IS_ARCHIVE) != 0;
     }
 
     @Override
-    protected boolean segmentsEqual(URI uri)
-    {
+    protected boolean segmentsEqual(URI uri) {
         String[] segments = this.segments;
         int length = segments.length;
         if (length != uri.segmentCount()) return false;
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             if (segments[i] != uri.segment(i)) return false;
         }
         return true;
     }
 
     @Override
-    public String scheme()
-    {
+    public String scheme() {
         return scheme;
     }
 
     @Override
-    public String authority()
-    {
+    public String authority() {
         return authority;
     }
 
     @Override
-    public String userInfo()
-    {
+    public String userInfo() {
         if (!hasAuthority()) return null;
 
         int i = authority.indexOf(USER_INFO_SEPARATOR);
@@ -382,8 +334,7 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String host()
-    {
+    public String host() {
         if (!hasAuthority()) return null;
 
         int i = authority.indexOf(USER_INFO_SEPARATOR);
@@ -392,8 +343,7 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String port()
-    {
+    public String port() {
         if (!hasAuthority()) return null;
 
         int i = authority.indexOf(USER_INFO_SEPARATOR);
@@ -402,60 +352,51 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String device()
-    {
+    public String device() {
         return device;
     }
 
     @Override
-    public String[] segments()
-    {
+    public String[] segments() {
         return segments.clone();
     }
 
     @Override
-    protected String[] rawSegments()
-    {
+    protected String[] rawSegments() {
         return segments;
     }
 
     @Override
-    public List<String> segmentsList()
-    {
+    public List<String> segmentsList() {
         return Collections.unmodifiableList(Arrays.asList(segments));
     }
 
     @Override
-    public int segmentCount()
-    {
+    public int segmentCount() {
         return segments.length;
     }
 
     @Override
-    public String segment(int i)
-    {
+    public String segment(int i) {
         return segments[i];
     }
 
     @Override
-    public String lastSegment()
-    {
+    public String lastSegment() {
         int len = segments.length;
         if (len == 0) return null;
         return segments[len - 1];
     }
 
     @Override
-    public String path()
-    {
+    public String path() {
         if (!hasPath()) return null;
 
         CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
         if (hasAbsolutePath()) result.append(SEGMENT_SEPARATOR);
 
         String[] segments = this.segments;
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
+        for (int i = 0, len = segments.length; i < len; i++) {
             if (i != 0) result.append(SEGMENT_SEPARATOR);
             result.append(segments[i]);
         }
@@ -463,14 +404,12 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String devicePath()
-    {
+    public String devicePath() {
         if (!hasPath()) return null;
 
         CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
 
-        if (hasAuthority())
-        {
+        if (hasAuthority()) {
             if (!isArchive()) result.append(AUTHORITY_SEPARATOR);
             result.append(authority);
 
@@ -481,8 +420,7 @@ final class Hierarchical extends URI
         if (hasAbsolutePath()) result.append(SEGMENT_SEPARATOR);
 
         String[] segments = this.segments;
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
+        for (int i = 0, len = segments.length; i < len; i++) {
             if (i != 0) result.append(SEGMENT_SEPARATOR);
             result.append(segments[i]);
         }
@@ -490,35 +428,27 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String query()
-    {
+    public String query() {
         return query;
     }
 
     @Override
-    public URI appendQuery(String query)
-    {
+    public URI appendQuery(String query) {
         return POOL.intern(false, org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_QUERY, true, scheme, authority, device, hasAbsolutePath(), segments, query);
     }
 
     @Override
-    public URI trimQuery()
-    {
-        if (query == null)
-        {
+    public URI trimQuery() {
+        if (query == null) {
             return this;
-        }
-        else
-        {
+        } else {
             return POOL.intern(false, org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_NONE, true, scheme, authority, device, hasAbsolutePath(), segments, null);
         }
     }
 
     @Override
-    public URI resolve(URI base, boolean preserveRootParents)
-    {
-        if (!base.isBase())
-        {
+    public URI resolve(URI base, boolean preserveRootParents) {
+        if (!base.isBase()) {
             throw new IllegalArgumentException("resolve against non-hierarchical or relative base");
         }
 
@@ -533,25 +463,20 @@ final class Hierarchical extends URI
 
         // note: it's okay for two URIs to share a segments array, since neither will ever modify it
 
-        if (authority == null)
-        {
+        if (authority == null) {
             // no authority: use base's
             newAuthority = base.authority();
 
-            if (device == null)
-            {
+            if (device == null) {
                 // no device: use base's
                 newDevice = base.device();
 
-                if (hasEmptyPath() && query == null)
-                {
+                if (hasEmptyPath() && query == null) {
                     // current document reference: use base path and query
                     newAbsolutePath = base.hasAbsolutePath();
                     newSegments = base.rawSegments();
                     newQuery = base.query();
-                }
-                else if (hasRelativePath())
-                {
+                } else if (hasRelativePath()) {
                     // relative path: merge with base and keep query.
                     // note that if the base has no path and this a non-empty relative path, there is an implied root in the resulting path
                     newAbsolutePath = base.hasAbsolutePath() || !hasEmptyPath();
@@ -570,14 +495,11 @@ final class Hierarchical extends URI
     // Merges this URI's relative path with the base non-relative path.
     // If base has no path, treat it as the root absolute path, unless this has  no path either.
     //
-    protected String[] mergePath(URI base, boolean preserveRootParents)
-    {
-        if (base.hasRelativePath())
-        {
+    protected String[] mergePath(URI base, boolean preserveRootParents) {
+        if (base.hasRelativePath()) {
             throw new IllegalArgumentException("merge against relative path");
         }
-        if (!hasRelativePath())
-        {
+        if (!hasRelativePath()) {
             throw new IllegalStateException("merge non-relative path");
         }
 
@@ -589,30 +511,23 @@ final class Hierarchical extends URI
         // use a stack to accumulate segments of base, except for the last
         // (i.e. skip trailing separator and anything following it), and of relative path
         //
-        for (int i = 0; i < baseSegmentCount - 1; i++)
-        {
+        for (int i = 0; i < baseSegmentCount - 1; i++) {
             sp = accumulate(stack, sp, base.segment(i), preserveRootParents);
         }
 
-        for (int i = 0; i < segmentCount; i++)
-        {
+        for (int i = 0; i < segmentCount; i++) {
             sp = accumulate(stack, sp, segments[i], preserveRootParents);
         }
 
         // if the relative path is empty or ends in an empty segment, a parent
         // reference, or a self reference, add a trailing separator to a
         // non-empty path
-        if (sp > 0)
-        {
-            if (segmentCount == 0)
-            {
+        if (sp > 0) {
+            if (segmentCount == 0) {
                 stack[sp++] = SEGMENT_EMPTY;
-            }
-            else
-            {
+            } else {
                 String segment = segments[segmentCount - 1];
-                if (segment == SEGMENT_EMPTY || segment == SEGMENT_PARENT || segment == SEGMENT_SELF)
-                {
+                if (segment == SEGMENT_EMPTY || segment == SEGMENT_PARENT || segment == SEGMENT_SELF) {
                     stack[sp++] = SEGMENT_EMPTY;
                 }
             }
@@ -624,26 +539,19 @@ final class Hierarchical extends URI
 
     // Adds a segment to a stack, skipping empty segments and self references,
     // and interpreting parent references.
-    protected static int accumulate(String[] stack, int sp, String segment, boolean preserveRootParents)
-    {
-        if (SEGMENT_PARENT == segment)
-        {
-            if (sp == 0)
-            {
+    protected static int accumulate(String[] stack, int sp, String segment, boolean preserveRootParents) {
+        if (SEGMENT_PARENT == segment) {
+            if (sp == 0) {
                 // special care must be taken for a root's parent reference: it is
                 // either ignored or the symbolic reference itself is pushed
                 if (preserveRootParents) stack[sp++] = segment;
-            }
-            else
-            {
+            } else {
                 // unless we're already accumulating root parent references,
                 // parent references simply pop the last segment descended
                 if (SEGMENT_PARENT == stack[sp - 1]) stack[sp++] = segment;
                 else sp--;
             }
-        }
-        else if (SEGMENT_EMPTY != segment && SEGMENT_SELF != segment)
-        {
+        } else if (SEGMENT_EMPTY != segment && SEGMENT_SELF != segment) {
             // skip empty segments and self references; push everything else
             stack[sp++] = segment;
         }
@@ -651,8 +559,7 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath)
-    {
+    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath) {
         if (!base.isBase() || isRelative()) return this;
 
         // note: these assertions imply that neither this nor the base URI has a
@@ -667,50 +574,38 @@ final class Hierarchical extends URI
         String[] newSegments = segments;
         String newQuery = query;
 
-        if (authority == base.authority() && (hasDeviceOrPath() || !base.hasDeviceOrPath()))
-        {
+        if (authority == base.authority() && (hasDeviceOrPath() || !base.hasDeviceOrPath())) {
             // matching authorities and no device or path removal
             newAuthority = null;
 
-            if (device == base.device())
-            {
+            if (device == base.device()) {
                 boolean hasPath = hasPath();
                 boolean baseHasPath = base.hasPath();
-                if (hasPath || !baseHasPath)
-                {
+                if (hasPath || !baseHasPath) {
                     // matching devices and no path removal
                     newDevice = null;
 
                     // exception if (!hasPath() && base.hasPath())
 
-                    if (!anyRelPath && !shorterRelPath)
-                    {
+                    if (!anyRelPath && !shorterRelPath) {
                         System.out.println("user rejects a relative path: keep absolute or no path");
-                    }
-                    else if (hasPath == baseHasPath && segmentsEqual(base) && query == base.query())
-                    {
+                    } else if (hasPath == baseHasPath && segmentsEqual(base) && query == base.query()) {
                         // current document reference: keep no path or query
                         newAbsolutePath = false;
                         newSegments = NO_SEGMENTS;
                         newQuery = null;
-                    }
-                    else if (hasPath && !baseHasPath)
-                    {
+                    } else if (hasPath && !baseHasPath) {
                         // no paths: keep query only
                         newAbsolutePath = false;
                         newSegments = NO_SEGMENTS;
                     }
                     // exception if (!hasAbsolutePath())
-                    else if (hasCollapsableSegments(preserveRootParents))
-                    {
+                    else if (hasCollapsableSegments(preserveRootParents)) {
                         System.out.println("path form demands an absolute path: keep it and query");
-                    }
-                    else
-                    {
+                    } else {
                         // keep query and select relative or absolute path based on length
                         String[] rel = findRelativePath(base, preserveRootParents);
-                        if (anyRelPath || segments.length > rel.length)
-                        {
+                        if (anyRelPath || segments.length > rel.length) {
                             // user demands a relative path or the absolute path is longer
                             newAbsolutePath = false;
                             newSegments = rel;
@@ -735,21 +630,17 @@ final class Hierarchical extends URI
     // preserveRootsParents is false, parent references are not collapsible if
     // they are the first segment or preceded only by other parent
     // references.
-    protected boolean hasCollapsableSegments(boolean preserveRootParents)
-    {
-        if (hasRelativePath())
-        {
+    protected boolean hasCollapsableSegments(boolean preserveRootParents) {
+        if (hasRelativePath()) {
             throw new IllegalStateException("test collapsability of relative path");
         }
 
         String[] segments = this.segments;
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
+        for (int i = 0, len = segments.length; i < len; i++) {
             String segment = segments[i];
             if (i < len - 1 && SEGMENT_EMPTY == segment ||
                     SEGMENT_SELF == segment ||
-                    SEGMENT_PARENT == segment && (!preserveRootParents || i != 0 && SEGMENT_PARENT != segments[i - 1]))
-            {
+                    SEGMENT_PARENT == segment && (!preserveRootParents || i != 0 && SEGMENT_PARENT != segments[i - 1])) {
                 return true;
             }
         }
@@ -759,15 +650,12 @@ final class Hierarchical extends URI
     // Returns the shortest relative path between the the non-relative path of
     // the given base and this absolute path.  If the base has no path, it is
     // treated as the root absolute path.
-    protected String[] findRelativePath(URI base, boolean preserveRootParents)
-    {
-        if (base.hasRelativePath())
-        {
+    protected String[] findRelativePath(URI base, boolean preserveRootParents) {
+        if (base.hasRelativePath()) {
             throw new IllegalArgumentException(
                     "find relative path against base with relative path");
         }
-        if (!hasAbsolutePath())
-        {
+        if (!hasAbsolutePath()) {
             throw new IllegalArgumentException(
                     "find relative path of non-absolute path");
         }
@@ -788,8 +676,7 @@ final class Hierarchical extends URI
         // last segment removed, all preceding segments can be considered non-
         // empty and followed by a separator, while the last segment of endPath
         // will either be non-empty and not followed by a separator, or just empty
-        for (int count = startCount < endCount ? startCount : endCount - 1; diff < count && startPath[diff] == endPath[diff]; diff++)
-        {
+        for (int count = startCount < endCount ? startCount : endCount - 1; diff < count && startPath[diff] == endPath[diff]; diff++) {
             // Empty statement.
         }
 
@@ -798,16 +685,14 @@ final class Hierarchical extends URI
 
         // a single separator, possibly preceded by some parent reference
         // segments, is redundant
-        if (downCount == 1 && SEGMENT_EMPTY == endPath[endCount - 1])
-        {
+        if (downCount == 1 && SEGMENT_EMPTY == endPath[endCount - 1]) {
             downCount = 0;
         }
 
         // an empty path needs to be replaced by a single "." if there is no
         // query, to distinguish it from a current document reference
         int length = upCount + downCount;
-        if (length == 0)
-        {
+        if (length == 0) {
             if (query == null) return ONE_SELF_SEGMENT;
             return NO_SEGMENTS;
         }
@@ -820,10 +705,8 @@ final class Hierarchical extends URI
     }
 
     @Override
-    protected String[] collapseSegments(boolean preserveRootParents)
-    {
-        if (hasRelativePath())
-        {
+    protected String[] collapseSegments(boolean preserveRootParents) {
+        if (hasRelativePath()) {
             throw new IllegalStateException("collapse relative path");
         }
 
@@ -835,18 +718,15 @@ final class Hierarchical extends URI
         String[] stack = new String[segmentCount];
         int sp = 0;
 
-        for (int i = 0; i < segmentCount; i++)
-        {
+        for (int i = 0; i < segmentCount; i++) {
             sp = accumulate(stack, sp, segments[i], preserveRootParents);
         }
 
         // if the path is non-empty and originally ended in an empty segment, a
         // parent reference, or a self reference, add a trailing separator
-        if (sp > 0)
-        {
+        if (sp > 0) {
             String segment = segments[segmentCount - 1];
-            if (segment == SEGMENT_EMPTY || segment == SEGMENT_PARENT || segment == SEGMENT_SELF)
-            {
+            if (segment == SEGMENT_EMPTY || segment == SEGMENT_PARENT || segment == SEGMENT_SELF) {
                 stack[sp++] = SEGMENT_EMPTY;
             }
         }
@@ -856,30 +736,23 @@ final class Hierarchical extends URI
     }
 
     @Override
-    protected void cacheString(String string)
-    {
+    protected void cacheString(String string) {
         toString = POOL.newCachedToString(this, string);
     }
 
     @Override
-    protected void flushCachedString()
-    {
+    protected void flushCachedString() {
         toString = null;
     }
 
     @Override
-    protected String getCachedString()
-    {
+    protected String getCachedString() {
         WeakReference<String> toString = this.toString;
-        if (toString != null)
-        {
+        if (toString != null) {
             String result = toString.get();
-            if (result == null)
-            {
+            if (result == null) {
                 toString.clear();
-            }
-            else
-            {
+            } else {
                 return result;
             }
         }
@@ -887,44 +760,37 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String cachedToString = getCachedString();
-        if (cachedToString != null)
-        {
+        if (cachedToString != null) {
             return cachedToString;
         }
 
         CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
 
-        if (!isRelative())
-        {
+        if (!isRelative()) {
             result.append(scheme);
             result.append(SCHEME_SEPARATOR);
         }
 
-        if (hasAuthority())
-        {
+        if (hasAuthority()) {
             if (!isArchive()) result.append(AUTHORITY_SEPARATOR);
             result.append(authority);
         }
 
-        if (hasDevice())
-        {
+        if (hasDevice()) {
             result.append(SEGMENT_SEPARATOR);
             result.append(device);
         }
 
         if (hasAbsolutePath()) result.append(SEGMENT_SEPARATOR);
 
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
+        for (int i = 0, len = segments.length; i < len; i++) {
             if (i != 0) result.append(SEGMENT_SEPARATOR);
             result.append(segments[i]);
         }
 
-        if (hasQuery())
-        {
+        if (hasQuery()) {
             result.append(QUERY_SEPARATOR);
             result.append(query);
         }
@@ -935,99 +801,78 @@ final class Hierarchical extends URI
     }
 
     @Override
-    protected boolean matches(String string)
-    {
+    protected boolean matches(String string) {
         String cachedString = getCachedString();
-        if (cachedString != null)
-        {
+        if (cachedString != null) {
             return cachedString.equals(string);
         }
 
         int length = string.length();
 
         int index = 0;
-        if (!isRelative())
-        {
-            if (!string.startsWith(scheme))
-            {
+        if (!isRelative()) {
+            if (!string.startsWith(scheme)) {
                 return false;
             }
             index += scheme.length();
-            if (index >= length || string.charAt(index) != SCHEME_SEPARATOR)
-            {
+            if (index >= length || string.charAt(index) != SCHEME_SEPARATOR) {
                 return false;
             }
             ++index;
         }
 
-        if (hasAuthority())
-        {
-            if (!isArchive())
-            {
-                if (!string.startsWith(AUTHORITY_SEPARATOR, index))
-                {
+        if (hasAuthority()) {
+            if (!isArchive()) {
+                if (!string.startsWith(AUTHORITY_SEPARATOR, index)) {
                     return false;
                 }
                 index += 2;
             }
-            if (!string.startsWith(authority, index))
-            {
+            if (!string.startsWith(authority, index)) {
                 return false;
             }
             index += authority.length();
         }
 
-        if (hasDevice())
-        {
-            if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR)
-            {
+        if (hasDevice()) {
+            if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR) {
                 return false;
             }
             ++index;
-            if (!string.startsWith(device, index))
-            {
+            if (!string.startsWith(device, index)) {
                 return false;
             }
             index += device.length();
         }
 
-        if (hasAbsolutePath())
-        {
-            if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR)
-            {
+        if (hasAbsolutePath()) {
+            if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR) {
                 return false;
             }
             ++index;
         }
 
         String[] segments = this.segments;
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
-            if (i != 0)
-            {
-                if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR)
-                {
+        for (int i = 0, len = segments.length; i < len; i++) {
+            if (i != 0) {
+                if (index >= length || string.charAt(index) != SEGMENT_SEPARATOR) {
                     return false;
                 }
                 ++index;
             }
             String segment = segments[i];
-            if (!string.startsWith(segment, index))
-            {
+            if (!string.startsWith(segment, index)) {
                 return false;
             }
             index += segment.length();
         }
 
-        if (hasQuery())
-        {
-            if (index >= length || string.charAt(index) != QUERY_SEPARATOR)
-            {
+        if (hasQuery()) {
+            if (index >= length || string.charAt(index) != QUERY_SEPARATOR) {
                 return false;
             }
             ++index;
-            if (!string.startsWith(query, index))
-            {
+            if (!string.startsWith(query, index)) {
                 return false;
             }
             index += query.length();
@@ -1037,8 +882,7 @@ final class Hierarchical extends URI
     }
 
     @Override
-    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
-    {
+    protected boolean matches(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query) {
         return
                 hierarchical &&
                         hasAbsolutePath() == absolutePath &&
@@ -1048,28 +892,22 @@ final class Hierarchical extends URI
     }
 
     @Override
-    protected boolean matches(String base, String path)
-    {
-        if (!isPlatform() || segments[0] != base)
-        {
+    protected boolean matches(String base, String path) {
+        if (!isPlatform() || segments[0] != base) {
             return false;
         }
 
         String[] segments = this.segments;
         int length = path.length();
-        for (int i = 1, len = segments.length, index = 1; i < len; i++)
-        {
-            if (i != 1)
-            {
-                if (index >= length || path.charAt(index) != SEGMENT_SEPARATOR)
-                {
+        for (int i = 1, len = segments.length, index = 1; i < len; i++) {
+            if (i != 1) {
+                if (index >= length || path.charAt(index) != SEGMENT_SEPARATOR) {
                     return false;
                 }
                 ++index;
             }
             String segment = segments[i];
-            if (!path.startsWith(segment, index))
-            {
+            if (!path.startsWith(segment, index)) {
                 return false;
             }
             index += segment.length();
@@ -1078,16 +916,14 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String toFileString()
-    {
+    public String toFileString() {
         if (!isFile()) return null;
 
         CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
         char separator = File.separatorChar;
         boolean hasDevice = hasDevice();
 
-        if (hasAuthority())
-        {
+        if (hasAuthority()) {
             result.append("//");
             result.append(authority);
 
@@ -1098,8 +934,7 @@ final class Hierarchical extends URI
         if (hasAbsolutePath()) result.append(separator);
 
         String[] segments = this.segments;
-        for (int i = 0, len = segments.length; i < len; i++)
-        {
+        for (int i = 0, len = segments.length; i < len; i++) {
             if (i != 0) result.append(separator);
             result.append(segments[i]);
         }
@@ -1108,14 +943,11 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public String toPlatformString(boolean decode)
-    {
-        if (isPlatform())
-        {
+    public String toPlatformString(boolean decode) {
+        if (isPlatform()) {
             CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
             String[] segments = this.segments;
-            for (int i = 1, len = segments.length; i < len; i++)
-            {
+            for (int i = 1, len = segments.length; i < len; i++) {
                 result.append('/');
                 result.append(decode ? URI.decode(segments[i]) : segments[i]);
             }
@@ -1125,18 +957,15 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI appendSegment(String segment)
-    {
+    public URI appendSegment(String segment) {
         // Do preliminary checking now but full checking later.
         //
-        if (segment == null)
-        {
+        if (segment == null) {
             throw new IllegalArgumentException("invalid segment: null");
         }
 
         boolean isEmptySegment = segment.length() == 0;
-        if (isEmptySegment && scheme != null && authority == null && device == null && segments.length == 0)
-        {
+        if (isEmptySegment && scheme != null && authority == null && device == null && segments.length == 0) {
             // Ignore appending an empty segment that would turn scheme:/ into schema:// because that would look like an empty authority without segments.
             return this;
         }
@@ -1147,21 +976,16 @@ final class Hierarchical extends URI
         String[] newSegments;
         String newDevice = device;
 
-        if (isEmptySegment && segments.length == 0)
-        {
+        if (isEmptySegment && segments.length == 0) {
             // Turn it into trailing separator.
             newAbsolutePath = true;
             newSegments = NO_SEGMENTS;
-        }
-        else if (device == null && segments.length == 0 && !isEmptySegment && segment.charAt(segment.length() - 1)== DEVICE_IDENTIFIER)
-        {
+        } else if (device == null && segments.length == 0 && !isEmptySegment && segment.charAt(segment.length() - 1) == DEVICE_IDENTIFIER) {
             // Capture the first segment as the device.
             newDevice = CommonUtil.intern(segment);
             newSegments = NO_SEGMENTS;
             newAbsolutePath = false;
-        }
-        else
-        {
+        } else {
             // Really append the segment.
             newSegments = SegmentSequence.STRING_ARRAY_POOL.intern(segments, segments.length, segment, true);
         }
@@ -1170,30 +994,21 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI appendSegments(String[] segments)
-    {
+    public URI appendSegments(String[] segments) {
         // Do preliminary checking now but full checking later.
         //
-        if (segments == null)
-        {
+        if (segments == null) {
             throw new IllegalArgumentException("invalid segments: null");
-        }
-        else if (segments.length == 1)
-        {
+        } else if (segments.length == 1) {
             return appendSegment(segments[0]);
-        }
-        else
-        {
-            if (device == null && authority == null && this.segments.length == 0)
-            {
+        } else {
+            if (device == null && authority == null && this.segments.length == 0) {
                 String[] newSegments = SegmentSequence.STRING_ARRAY_POOL.intern(segments, 1, segments.length - 1);
                 return appendSegment(segments[0]).appendSegments(newSegments);
             }
 
-            for (String segment : segments)
-            {
-                if (segment == null)
-                {
+            for (String segment : segments) {
+                if (segment == null) {
                     throw new IllegalArgumentException("invalid segment: null");
                 }
             }
@@ -1207,18 +1022,14 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI trimSegments(int i)
-    {
+    public URI trimSegments(int i) {
         if (i < 1) return this;
 
         String[] newSegments;
         int len = segments.length - i;
-        if (len > 0)
-        {
+        if (len > 0) {
             newSegments = SegmentSequence.STRING_ARRAY_POOL.intern(segments, 0, len);
-        }
-        else
-        {
+        } else {
             newSegments = NO_SEGMENTS;
         }
 
@@ -1226,14 +1037,12 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public boolean hasTrailingPathSeparator()
-    {
+    public boolean hasTrailingPathSeparator() {
         return (flags & HAS_TRAILING_PATH_SEPARATOR) != 0;
     }
 
     @Override
-    public String fileExtension()
-    {
+    public String fileExtension() {
         int len = segments.length;
         if (len == 0) return null;
 
@@ -1243,29 +1052,23 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI appendFileExtension(String fileExtension)
-    {
+    public URI appendFileExtension(String fileExtension) {
         // Do preliminary checking now and full validation later.
-        if (fileExtension == null)
-        {
+        if (fileExtension == null) {
             throw new IllegalArgumentException("invalid segment portion: null");
         }
 
         int len = segments.length;
-        if (len == 0)
-        {
-            if (!validSegment(fileExtension))
-            {
+        if (len == 0) {
+            if (!validSegment(fileExtension)) {
                 throw new IllegalArgumentException("invalid segment portion: " + fileExtension);
             }
             return this;
         }
 
         String lastSegment = segments[len - 1];
-        if (SEGMENT_EMPTY == lastSegment)
-        {
-            if (!validSegment(fileExtension))
-            {
+        if (SEGMENT_EMPTY == lastSegment) {
+            if (!validSegment(fileExtension)) {
                 throw new IllegalArgumentException("invalid segment portion: " + fileExtension);
             }
             return this;
@@ -1283,8 +1086,7 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public URI trimFileExtension()
-    {
+    public URI trimFileExtension() {
         int len = segments.length;
         if (len == 0) return this;
 
@@ -1300,24 +1102,20 @@ final class Hierarchical extends URI
     }
 
     @Override
-    public boolean isPrefix()
-    {
+    public boolean isPrefix() {
         return (flags & IS_PREFIX) != 0;
     }
 
     @Override
-    public URI replacePrefix(URI oldPrefix, URI newPrefix)
-    {
-        if (!oldPrefix.isPrefix() || !newPrefix.isPrefix())
-        {
+    public URI replacePrefix(URI oldPrefix, URI newPrefix) {
+        if (!oldPrefix.isPrefix() || !newPrefix.isPrefix()) {
             String which = oldPrefix.isPrefix() ? "new" : "old";
             throw new IllegalArgumentException("non-prefix " + which + " value");
         }
 
         // Don't even consider it unless this is hierarchical and has scheme,
         // authority, device and path absoluteness equal to those of the prefix.
-        if (scheme != oldPrefix.scheme() || authority != oldPrefix.authority() || device != oldPrefix.device() || hasAbsolutePath() != oldPrefix.hasAbsolutePath())
-        {
+        if (scheme != oldPrefix.scheme() || authority != oldPrefix.authority() || device != oldPrefix.device() || hasAbsolutePath() != oldPrefix.hasAbsolutePath()) {
             return null;
         }
 
@@ -1327,15 +1125,12 @@ final class Hierarchical extends URI
         // If the prefix has no segments, then it is the root absolute path, and
         // we know this is an absolute path, too.
         // Get what's left of the segments after trimming the prefix.
-        String [] oldPrefixSegments = oldPrefix.rawSegments();
+        String[] oldPrefixSegments = oldPrefix.rawSegments();
         int oldPrefixSegmentCount = oldPrefixSegments.length;
         int tailSegmentCount;
-        if (oldPrefixSegmentCount == 0)
-        {
+        if (oldPrefixSegmentCount == 0) {
             tailSegmentCount = segmentsLength;
-        }
-        else
-        {
+        } else {
             // This must have no fewer segments than the prefix.  Since the prefix
             // is not the root absolute path, its last segment is empty; all others
             // must match.
@@ -1343,19 +1138,15 @@ final class Hierarchical extends URI
             int segmentsToCompare = oldPrefixSegmentCount - 1;
             if (segmentsLength <= segmentsToCompare) return null;
 
-            for (; i < segmentsToCompare; i++)
-            {
+            for (; i < segmentsToCompare; i++) {
                 if (segments[i] != oldPrefixSegments[i]) return null;
             }
 
             // The prefix really is a prefix of this.  If this has just one more,
             // empty segment, the paths are the same.
-            if (i == segmentsLength - 1 && segments[i] == SEGMENT_EMPTY)
-            {
+            if (i == segmentsLength - 1 && segments[i] == SEGMENT_EMPTY) {
                 return newPrefix;
-            }
-            else
-            {
+            } else {
                 tailSegmentCount = segmentsLength - i;
             }
         }
@@ -1363,15 +1154,12 @@ final class Hierarchical extends URI
         // If the new prefix has segments, it is not the root absolute path,
         // and we need to drop the trailing empty segment and append the tail
         // segments.
-        String [] newPrefixSegments = newPrefix.rawSegments();
+        String[] newPrefixSegments = newPrefix.rawSegments();
         int newPrefixSegmentCount = newPrefixSegments.length;
         String[] mergedSegments;
-        if (newPrefixSegmentCount == 0)
-        {
+        if (newPrefixSegmentCount == 0) {
             mergedSegments = tailSegmentCount == segmentsLength ? segments : SegmentSequence.STRING_ARRAY_POOL.intern(segments, segmentsLength - tailSegmentCount, tailSegmentCount);
-        }
-        else
-        {
+        } else {
             mergedSegments = SegmentSequence.STRING_ARRAY_POOL.intern(newPrefixSegments, 0, newPrefixSegmentCount - 1, segments, segmentsLength - tailSegmentCount, tailSegmentCount);
         }
 

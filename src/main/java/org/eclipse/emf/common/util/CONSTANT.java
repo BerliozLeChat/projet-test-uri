@@ -10,7 +10,6 @@ public class CONSTANT {
     protected static final URIPool POOL = new URIPool(CommonUtil.REFERENCE_CLEARING_QUEUE);
 
 
-
     // Identifies a file-type absolute URI.
     protected static final String SCHEME_FILE = "file";
     protected static final String SCHEME_JAR = "jar";
@@ -56,7 +55,7 @@ public class CONSTANT {
 
     // Characters to use in escaping.
     protected static final char ESCAPE = '%';
-    protected static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    protected static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     // Some character classes, as defined in RFC 2396's BNF for URI.
     // These are 128-bit bitmasks, stored as two longs, where the Nth bit is set
@@ -65,13 +64,13 @@ public class CONSTANT {
     // and a character is tested against them using matches().
     //
     protected static final long ALPHA_HI = highBitmask('a', 'z') | highBitmask('A', 'Z');
-    protected static final long ALPHA_LO = lowBitmask('a', 'z')  | lowBitmask('A', 'Z');
+    protected static final long ALPHA_LO = lowBitmask('a', 'z') | lowBitmask('A', 'Z');
     protected static final long DIGIT_HI = highBitmask('0', '9');
     protected static final long DIGIT_LO = lowBitmask('0', '9');
     protected static final long ALPHANUM_HI = ALPHA_HI | DIGIT_HI;
     protected static final long ALPHANUM_LO = ALPHA_LO | DIGIT_LO;
     protected static final long HEX_HI = DIGIT_HI | highBitmask('A', 'F') | highBitmask('a', 'f');
-    protected static final long HEX_LO = DIGIT_LO | lowBitmask('A', 'F')  | lowBitmask('a', 'f');
+    protected static final long HEX_LO = DIGIT_LO | lowBitmask('A', 'F') | lowBitmask('a', 'f');
     protected static final long UNRESERVED_HI = ALPHANUM_HI | highBitmask("-_.!~*'()");
     protected static final long UNRESERVED_LO = ALPHANUM_LO | lowBitmask("-_.!~*'()");
     protected static final long RESERVED_HI = highBitmask(";/?:@&=+$,");

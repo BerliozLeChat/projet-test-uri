@@ -8,8 +8,7 @@ import static org.eclipse.emf.common.util.CONSTANT.FRAGMENT_SEPARATOR;
  * A subclass for representing a URI with a fragment.
  * Most methods simply delegate to the {@link #trimFragment() base} URI.
  */
-final class Fragment extends URI
-{
+final class Fragment extends URI {
     /**
      * The {@link #trimFragment() base} URI.
      */
@@ -26,8 +25,7 @@ final class Fragment extends URI
      * Assertions are used to validate the integrity of the result.
      * I.e., the fragment must be non-null and {@link #splitInternFragment(String) split interned} and the hash code must be equal to the hash code of the {@link #toString()}.
      */
-    protected Fragment(int hashCode, URI uri, CharSequence fragment)
-    {
+    protected Fragment(int hashCode, URI uri, CharSequence fragment) {
         super(hashCode);
 
         this.uri = uri;
@@ -44,292 +42,244 @@ final class Fragment extends URI
     }
 
     @Override
-    public boolean isRelative()
-    {
+    public boolean isRelative() {
         return uri.isRelative();
     }
 
     @Override
-    protected boolean isBase()
-    {
+    protected boolean isBase() {
         return uri.isBase();
     }
 
     @Override
-    public boolean isHierarchical()
-    {
+    public boolean isHierarchical() {
         return uri.isHierarchical();
     }
 
     @Override
-    public boolean hasAuthority()
-    {
+    public boolean hasAuthority() {
         return uri.hasAuthority();
     }
 
     @Override
-    public boolean hasOpaquePart()
-    {
+    public boolean hasOpaquePart() {
         return uri.hasOpaquePart();
     }
 
     @Override
-    public boolean hasDevice()
-    {
+    public boolean hasDevice() {
         return uri.hasDevice();
     }
 
     @Override
-    public boolean hasPath()
-    {
+    public boolean hasPath() {
         return uri.hasPath();
     }
 
     @Override
-    protected boolean hasDeviceOrPath()
-    {
+    protected boolean hasDeviceOrPath() {
         return uri.hasDeviceOrPath();
     }
 
     @Override
-    public boolean hasAbsolutePath()
-    {
+    public boolean hasAbsolutePath() {
         return uri.hasAbsolutePath();
     }
 
     @Override
-    public boolean hasRelativePath()
-    {
+    public boolean hasRelativePath() {
         return uri.hasRelativePath();
     }
 
     @Override
-    public boolean hasEmptyPath()
-    {
+    public boolean hasEmptyPath() {
         return uri.hasEmptyPath();
     }
 
     @Override
-    public boolean hasQuery()
-    {
+    public boolean hasQuery() {
         return uri.hasQuery();
     }
 
     @Override
-    public boolean hasFragment()
-    {
+    public boolean hasFragment() {
         return true;
     }
 
     @Override
-    public boolean isCurrentDocumentReference()
-    {
+    public boolean isCurrentDocumentReference() {
         return uri.isCurrentDocumentReference();
     }
 
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return false;
     }
 
     @Override
-    public boolean isFile()
-    {
+    public boolean isFile() {
         return uri.isFile();
     }
 
     @Override
-    public boolean isPlatform()
-    {
+    public boolean isPlatform() {
         return uri.isPlatform();
     }
 
     @Override
-    public boolean isPlatformResource()
-    {
+    public boolean isPlatformResource() {
         return uri.isPlatformResource();
     }
 
     @Override
-    public boolean isPlatformPlugin()
-    {
+    public boolean isPlatformPlugin() {
         return uri.isPlatformPlugin();
     }
 
     @Override
-    public boolean isArchive()
-    {
+    public boolean isArchive() {
         return uri.isArchive();
     }
 
     @Override
-    protected boolean segmentsEqual(URI uri)
-    {
+    protected boolean segmentsEqual(URI uri) {
         return uri.segmentsEqual(uri);
     }
 
     @Override
-    public String scheme()
-    {
+    public String scheme() {
         return uri.scheme();
     }
 
     @Override
-    public String opaquePart()
-    {
+    public String opaquePart() {
         return uri.opaquePart();
     }
 
     @Override
-    public String authority()
-    {
+    public String authority() {
         return uri.authority();
     }
 
     @Override
-    public String userInfo()
-    {
+    public String userInfo() {
         return uri.userInfo();
     }
 
     @Override
-    public String host()
-    {
+    public String host() {
         return uri.host();
     }
 
     @Override
-    public String port()
-    {
+    public String port() {
         return uri.port();
     }
 
     @Override
-    public String device()
-    {
+    public String device() {
         return uri.device();
     }
 
     @Override
-    public String[] segments()
-    {
+    public String[] segments() {
         return uri.segments();
     }
 
     @Override
-    protected String[] rawSegments()
-    {
+    protected String[] rawSegments() {
         return uri.rawSegments();
     }
 
     @Override
-    public List<String> segmentsList()
-    {
+    public List<String> segmentsList() {
         return uri.segmentsList();
     }
 
     @Override
-    public int segmentCount()
-    {
+    public int segmentCount() {
         return uri.segmentCount();
     }
 
     @Override
-    public String segment(int i)
-    {
+    public String segment(int i) {
         return uri.segment(i);
     }
 
     @Override
-    public String lastSegment()
-    {
+    public String lastSegment() {
         return uri.lastSegment();
     }
 
     @Override
-    public String path()
-    {
+    public String path() {
         return uri.path();
     }
 
     @Override
-    public String devicePath()
-    {
+    public String devicePath() {
         return uri.devicePath();
     }
 
     @Override
-    public String query()
-    {
+    public String query() {
         return uri.query();
     }
 
-    private URI appendFragment(URI uri)
-    {
+    private URI appendFragment(URI uri) {
         // If the hash code is 0 then it's highly likely we've deferred split interning the fragment, so don't use rawAppendFragment in that case.
         //
         return hashCode == 0 ? uri.appendFragment(fragment.toString()) : uri.rawAppendFragment(fragment);
     }
 
     @Override
-    public URI appendQuery(String query)
-    {
+    public URI appendQuery(String query) {
         return appendFragment(uri.appendQuery(query));
     }
 
     @Override
-    public URI trimQuery()
-    {
+    public URI trimQuery() {
         URI result = uri.trimQuery();
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public String fragment()
-    {
-        if (hashCode == 0)
-        {
+    public String fragment() {
+        if (hashCode == 0) {
             hashCode();
         }
         return fragment.toString();
     }
 
     @Override
-    public URI appendFragment(String fragment)
-    {
+    public URI appendFragment(String fragment) {
         return uri.appendFragment(fragment);
     }
 
     @Override
-    public URI trimFragment()
-    {
+    public URI trimFragment() {
         return uri;
     }
 
     @Override
-    public URI resolve(URI base, boolean preserveRootParents)
-    {
+    public URI resolve(URI base, boolean preserveRootParents) {
         URI result = uri.resolve(base, preserveRootParents);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath)
-    {
+    public URI deresolve(URI base, boolean preserveRootParents, boolean anyRelPath, boolean shorterRelPath) {
         URI result = uri.deresolve(base, preserveRootParents, anyRelPath, shorterRelPath);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    protected String[] collapseSegments(boolean preserveRootParents)
-    {
+    protected String[] collapseSegments(boolean preserveRootParents) {
         return uri.collapseSegments(preserveRootParents);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         CommonUtil.StringPool.StringsAccessUnit result = CommonUtil.STRING_POOL.getStringBuilder();
         result.append(uri.toString());
         result.append(FRAGMENT_SEPARATOR);
@@ -341,19 +291,16 @@ final class Fragment extends URI
      * If the hash code is <code>0</code> then most likely we've got a pending lazy {@link LazyFragmentInitializer}.
      */
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         // Check if we have a deferred hash code initialization pending...
         // Note there is the very remote possibility that the hash code could really be 0...
         //
-        if (hashCode == 0)
-        {
+        if (hashCode == 0) {
             hashCode = (uri.hashCode * 31 + FRAGMENT_SEPARATOR) * CommonUtil.powerOf31(fragment.length()) + fragment.hashCode();
 
             // In that case, also split intern the fragment, but check if it's really a string, because otherwise it really must be split interned already.
             //
-            if (fragment instanceof String)
-            {
+            if (fragment instanceof String) {
                 fragment = splitInternFragment(fragment.toString());
             }
         }
@@ -361,86 +308,73 @@ final class Fragment extends URI
     }
 
     @Override
-    public boolean equals(Object object)
-    {
-        if (object == this)
-        {
+    public boolean equals(Object object) {
+        if (object == this) {
             return true;
         }
 
-        if (!(object instanceof Fragment))
-        {
+        if (!(object instanceof Fragment)) {
             return false;
         }
 
         // Be careful to accommodate the case of a deferred split interned fragment.
         //
-        Fragment that = (Fragment)object;
+        Fragment that = (Fragment) object;
         return uri == that.uri && (fragment == that.fragment || fragment.toString().equals(that.fragment().toString()));
     }
 
     @Override
-    public String toFileString()
-    {
+    public String toFileString() {
         return uri.toFileString();
     }
 
     @Override
-    public String toPlatformString(boolean decode)
-    {
+    public String toPlatformString(boolean decode) {
         return uri.toPlatformString(decode);
     }
 
     @Override
-    public URI appendSegment(String segment)
-    {
+    public URI appendSegment(String segment) {
         URI result = uri.appendSegment(segment);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public URI appendSegments(String[] segments)
-    {
+    public URI appendSegments(String[] segments) {
         URI result = uri.appendSegments(segments);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public URI trimSegments(int i)
-    {
+    public URI trimSegments(int i) {
         URI result = uri.trimSegments(i);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public boolean hasTrailingPathSeparator()
-    {
+    public boolean hasTrailingPathSeparator() {
         return uri.hasTrailingPathSeparator();
     }
 
     @Override
-    public String fileExtension()
-    {
+    public String fileExtension() {
         return uri.fileExtension();
     }
 
     @Override
-    public URI appendFileExtension(String fileExtension)
-    {
+    public URI appendFileExtension(String fileExtension) {
         URI result = uri.appendFileExtension(fileExtension);
         return result == uri ? this : appendFragment(result);
     }
 
     @Override
-    public URI trimFileExtension()
-    {
+    public URI trimFileExtension() {
         URI result = uri.trimFileExtension();
         return result == uri ? this : result.rawAppendFragment(fragment);
     }
 
     @Override
-    public URI replacePrefix(URI oldPrefix, URI newPrefix)
-    {
+    public URI replacePrefix(URI oldPrefix, URI newPrefix) {
         URI result = uri.replacePrefix(oldPrefix, newPrefix);
         return result == uri ? this : result == null ? null : appendFragment(result);
     }
