@@ -5,13 +5,6 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 
-import java.io.File;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import static org.eclipse.emf.common.util.CONSTANT.*;
 import static org.eclipse.emf.common.util.URI.*;
 
@@ -368,7 +361,7 @@ import static org.eclipse.emf.common.util.URI.*;
 
                         // Check if it's an archive scheme...
                         //
-                        for (String archiveScheme : URI.ARCHIVE_SCHEMES)
+                        for (String archiveScheme : ARCHIVE_SCHEMES)
                         {
                             if (scheme == archiveScheme)
                             {
@@ -1703,7 +1696,7 @@ import static org.eclipse.emf.common.util.URI.*;
                 {
                     // Validate all the components.
                     //
-                    URI.validateURI(hierarchical, scheme, authority, device,
+                    validateURI(hierarchical, scheme, authority, device,
                             absolutePath, segments, query, null);
 
                     // Intern the components.
@@ -1726,7 +1719,7 @@ import static org.eclipse.emf.common.util.URI.*;
                 {
                     // Validate just the query.
                     //
-                    if (!URI.validQuery(query))
+                    if (!validQuery(query))
                     {
                         throw new IllegalArgumentException("invalid query portion: " + query);
                     }
@@ -1745,7 +1738,7 @@ import static org.eclipse.emf.common.util.URI.*;
                     for (int i = validate, length = segments.length; i < length; ++i)
                     {
                         String segment = segments[i];
-                        if (!URI.validSegment(segment))
+                        if (!validSegment(segment))
                         {
                             throw new IllegalArgumentException("invalid segment: " + segment);
                         }

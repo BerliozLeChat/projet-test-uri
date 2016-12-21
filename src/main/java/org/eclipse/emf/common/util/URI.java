@@ -252,12 +252,8 @@ public abstract class URI
 
     // Returns whether the given character is in the set specified by the given
     // bitmask.
-    protected static boolean matches(char c, long highBitmask, long lowBitmask)
-    {
-        if (c >= 128) return false;
-        return c < 64 ?
-                ((1L << c) & lowBitmask) != 0 :
-                ((1L << (c - 64)) & highBitmask) != 0;
+    protected static boolean matches(char c, long highBitmask, long lowBitmask) {
+        return c < 128 && c < 64 ? ((1L << c) & lowBitmask) != 0 : ((1L << (c - 64)) & highBitmask) != 0;
     }
 
     // Debugging method: converts the given long to a string of binary digits.
