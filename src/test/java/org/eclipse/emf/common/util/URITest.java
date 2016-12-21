@@ -460,35 +460,20 @@ public class URITest {
     public void testEquals1(){
         assertTrue(URI.createURI("test").equals(URI.createURI("test")));
     }
-/*
+
     @Test
     public void testEquals2(){
         URI test=URI.createURI("not");
         assertFalse(URI.createURI("test").equals(test));
     }
-*/
-    //TODO SegmentEqual
+
+
     @Test
     public void testSegmentEqual1(){
         String[] test = {"test"};
         assertTrue(URI.createHierarchicalURI(test,"test","test")
                 .segmentsEqual(URI.createHierarchicalURI(test,null,null)));
     }
-/*
-    @Test
-    public void testSegmentEqual2(){
-        String[] test = {"test"};
-        String[] nope = {"nope"};
-        assertFalse(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createHierarchicalURI(nope,null,null)));
-    }
-
-    @Test
-    public void testSegmentEqual3(){
-        String[] test = {"test"};
-        assertFalse(URI.createHierarchicalURI(test,"test","test").segmentsEqual(URI.createURI("nope")));
-    }
-
-*/
 
     @Test
     public void testScheme1() {
@@ -743,7 +728,7 @@ public class URITest {
                  null, "fragment");
         uri = uri.appendQuery("query#query");
     }
-/*
+
     @Test
     public void testAppendQuery2() {
         URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
@@ -759,7 +744,7 @@ public class URITest {
         uri = uri.appendQuery("query");
         assertEquals("query", uri.query());
     }
-*/
+
     @Test
     public void testTrimQuery1() {
         URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
@@ -1267,4 +1252,111 @@ public class URITest {
     public void testEncodeAuthority4() {
         assertEquals("test%2523%23", URI.encodeAuthority("test%23#", false));
     }
+
+    @Test
+    public void testEncodeQuery1() {
+        assertEquals("test%23", URI.encodeQuery("test#", true));
+    }
+
+    @Test
+    public void testEncodeQuery2() {
+        assertEquals("test!", URI.encodeQuery("test!", true));
+    }
+
+    @Test
+    public void testEncodeQuery3() {
+        assertEquals("test%23%23", URI.encodeQuery("test%23#", true));
+    }
+
+    @Test
+    public void testEncodeQuery4() {
+        assertEquals("test%2523%23", URI.encodeQuery("test%23#", false));
+    }
+
+    @Test
+    public void testEncodeFragment1() {
+        assertEquals("test%23", URI.encodeFragment("test#", true));
+    }
+
+    @Test
+    public void testEncodeFragment2() {
+        assertEquals("test!", URI.encodeFragment("test!", true));
+    }
+
+    @Test
+    public void testEncodeFragment3() {
+        assertEquals("test%23%23", URI.encodeFragment("test%23#", true));
+    }
+
+    @Test
+    public void testEncodeFragment4() {
+        assertEquals("test%2523%23", URI.encodeFragment("test%23#", false));
+    }
+
+    @Test
+    public void testDecode1() {
+        assertEquals("#", URI.decode("%23"));
+    }
+
+    @Test
+    public void testDecode2() {
+        assertEquals("test", URI.decode("test"));
+    }
+
+    @Test
+    public void testDecode3() {
+        assertEquals("%1", URI.decode("%1"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHierarchicalURI1() {
+        URI.createHierarchicalURI("test", null, null, "test", "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHierarchicalURI2() {
+        URI.createHierarchicalURI("scheme", "authority", "device", "query",
+                "fragment");
+    }
+
+    @Test
+    public void testCreateHierarchicalURI3() {
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                "query", "fragment");
+        assertEquals(uri.toString(),
+                "scheme://authority/device:?query#fragment");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHierarchicalURI4() {
+        String[] segments = { "test" };
+        URI uri = URI.createHierarchicalURI(URI.SCHEME_JAR, "authority", "device:",
+                segments, "query", "fragment");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateHierarchicalURI5() {
+        String[] segments = { "test/" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+    }
+
+    @Test
+    public void testCreateHierarchicalURI6() {
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                null, "query", "fragment");
+        assertEquals(uri.toString(),
+                "scheme://authority/device:/?query#fragment");
+    }
+
+    @Test
+    public void testCreateHierarchicalURI7() {
+        String[] segments = { "test" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        assertEquals(uri.toString(),
+                "scheme://authority/device:/test?query#fragment");
+    }
+
+
 }
