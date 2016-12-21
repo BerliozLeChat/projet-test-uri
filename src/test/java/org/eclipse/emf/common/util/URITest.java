@@ -5,6 +5,7 @@ import org.junit.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.eclipse.emf.common.util.CONSTANT.*;
 import static org.junit.Assert.*;
 
 public class URITest {
@@ -415,19 +416,19 @@ public class URITest {
 
     @Test
     public void testisArchive1() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_JAR, "test!", null,
+        assertTrue(URI.createHierarchicalURI(SCHEME_JAR, "test!", null,
                 null, "test", null) .isArchive());
     }
 
     @Test
     public void testisArchive2() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ZIP, "test!", null,
+        assertTrue(URI.createHierarchicalURI(SCHEME_ZIP, "test!", null,
                 null, "test", null) .isArchive());
     }
 
     @Test
     public void testisArchive3() {
-        assertTrue(URI.createHierarchicalURI(URI.SCHEME_ARCHIVE, "test!",
+        assertTrue(URI.createHierarchicalURI(SCHEME_ARCHIVE, "test!",
                 null,null, "test", null). isArchive());
     }
     @Test
@@ -438,17 +439,17 @@ public class URITest {
 
     @Test
     public void testisArchiveScheme1() {
-        assertTrue(URI.isArchiveScheme(URI.SCHEME_JAR));
+        assertTrue(URI.isArchiveScheme(SCHEME_JAR));
     }
 
     @Test
     public void testisArchiveScheme2() {
-        assertTrue(URI.isArchiveScheme(URI.SCHEME_ZIP));
+        assertTrue(URI.isArchiveScheme(SCHEME_ZIP));
     }
 
     @Test
     public void testisArchiveScheme3() {
-        assertTrue(URI.isArchiveScheme(URI.SCHEME_ARCHIVE));
+        assertTrue(URI.isArchiveScheme(SCHEME_ARCHIVE));
     }
 
     @Test
@@ -1330,7 +1331,7 @@ public class URITest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateHierarchicalURI4() {
         String[] segments = { "test" };
-        URI uri = URI.createHierarchicalURI(URI.SCHEME_JAR, "authority", "device:",
+        URI uri = URI.createHierarchicalURI(SCHEME_JAR, "authority", "device:",
                 segments, "query", "fragment");
     }
 
