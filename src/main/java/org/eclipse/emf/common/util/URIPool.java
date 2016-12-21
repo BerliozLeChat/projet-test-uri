@@ -24,9 +24,11 @@ import static org.eclipse.emf.common.util.URI.*;
         {
             super(1031, null, queue);
 
-            // The string cache will be managed by either an internal or external cache as appropriate.
-            //
-            cachedToStrings = externalQueue == null ? new ReferenceQueue<String>() : null;
+            // The string cache will be managed by either an internal or
+            // external cache as appropriate.
+
+            cachedToStrings = externalQueue == null ?
+                    new ReferenceQueue<String>() : null;
         }
 
         /**
@@ -35,23 +37,33 @@ import static org.eclipse.emf.common.util.URI.*;
         protected static class URIPoolAccessUnitBase extends AccessUnit<URI>
         {
             /**
-             * A local access unit for exclusive use in {@link #intern(char[], int, int)}.
+             * A local access unit for exclusive use in
+             * {@link #intern(char[], int, int)}.
              */
-            protected CommonUtil.StringPool.CharactersAccessUnit charactersAccessUnit =  new CommonUtil.StringPool.CharactersAccessUnit(null);
+            protected CommonUtil.StringPool.CharactersAccessUnit
+                    charactersAccessUnit =
+                    new CommonUtil.StringPool.CharactersAccessUnit(null);
 
             /**
-             * A local access unit for exclusive for normalizing the scheme in {@link #intern(String)}, {@link #intern(boolean, String)}, and {@link StringAccessUnit#parseIntoURI(String)}.
+             * A local access unit for exclusive for normalizing the scheme in
+             * {@link #intern(String)}, {@link #intern(boolean, String)},
+             * and {@link StringAccessUnit#parseIntoURI(String)}.
              */
-            protected CommonUtil.StringPool.StringAccessUnit stringAccessUnit =  new CommonUtil.StringPool.StringAccessUnit(CommonUtil.STRING_POOL, null);
+            protected CommonUtil.StringPool.StringAccessUnit stringAccessUnit =
+                    new CommonUtil.StringPool.StringAccessUnit
+                            (CommonUtil.STRING_POOL, null);
 
             /**
-             * The string pool entry found during the most recent use of {@link #substringAccessUnit}.
+             * The string pool entry found during the most recent use of
+             * {@link #substringAccessUnit}.
              */
             protected CommonUtil.StringPool.StringPoolEntry stringPoolEntry;
 
             /**
-             * A local access unit for exclusive use in {@link #intern(String, int, int)} and {@link #intern(String, int, int, int)}.
-             * It {@link #stringPoolEntry} the string pool entry that was matched when {@link CommonUtil.StringPool.SubstringAccessUnit#reset(boolean)} is called.
+             * A local access unit for exclusive use in {@link #intern(String, int, int)}
+             * and {@link #intern(String, int, int, int)}.
+             * It {@link #stringPoolEntry} the string pool entry that was matched when
+             * {@link CommonUtil.StringPool.SubstringAccessUnit#reset(boolean)} is called.
              */
             protected CommonUtil.StringPool.SubstringAccessUnit substringAccessUnit =
                     new CommonUtil.StringPool.SubstringAccessUnit(null)
@@ -65,9 +77,14 @@ import static org.eclipse.emf.common.util.URI.*;
                     };
 
             /**
-             * An access unit for exclusive use in {@link #internArray(String[], int, int, int)}.
+             * An access unit for exclusive use in
+             * {@link #internArray(String[], int, int, int)}.
              */
-            protected SegmentSequence.StringArrayPool.SegmentsAndSegmentCountAccessUnit stringArraySegmentsAndSegmentCountAccessUnit = new SegmentSequence.StringArrayPool.SegmentsAndSegmentCountAccessUnit(null);
+            protected SegmentSequence.StringArrayPool.
+                    SegmentsAndSegmentCountAccessUnit
+                    stringArraySegmentsAndSegmentCountAccessUnit =
+                    new SegmentSequence.StringArrayPool.
+                            SegmentsAndSegmentCountAccessUnit(null);
 
             protected URIPoolAccessUnitBase(Queue<URI> queue)
             {
@@ -104,7 +121,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 return CommonUtil.STRING_POOL.doIntern(false, stringAccessUnit);
             }
 
-            protected String intern(String string, int offset, int count, int hashCode)
+            protected String intern(String string, int offset, int count,
+                                    int hashCode)
             {
                 substringAccessUnit.setValue(string, offset, count, hashCode);
                 return CommonUtil.STRING_POOL.doIntern(false, substringAccessUnit);
@@ -122,16 +140,20 @@ import static org.eclipse.emf.common.util.URI.*;
                 return CommonUtil.STRING_POOL.doIntern(false, charactersAccessUnit);
             }
 
-            protected String intern(char[] characters, int offset, int count, int hashCode)
+            protected String intern(char[] characters, int offset, int count,
+                                    int hashCode)
             {
                 charactersAccessUnit.setValue(characters, offset, count, hashCode);
                 return CommonUtil.STRING_POOL.doIntern(false, charactersAccessUnit);
             }
 
-            protected String[] internArray(String[] segments, int offset, int segmentCount, int hashCode)
+            protected String[] internArray(String[] segments, int offset,
+                                           int segmentCount, int hashCode)
             {
-                stringArraySegmentsAndSegmentCountAccessUnit.setValue(segments, offset, segmentCount, hashCode);
-                return SegmentSequence.STRING_ARRAY_POOL.doIntern(false, stringArraySegmentsAndSegmentCountAccessUnit);
+                stringArraySegmentsAndSegmentCountAccessUnit.
+                        setValue(segments, offset, segmentCount, hashCode);
+                return SegmentSequence.STRING_ARRAY_POOL.
+                        doIntern(false, stringArraySegmentsAndSegmentCountAccessUnit);
             }
 
             @Override
@@ -145,7 +167,8 @@ import static org.eclipse.emf.common.util.URI.*;
         /**
          * Access units for basic string access.
          */
-        protected final StringAccessUnit.Queue stringAccessUnits = new StringAccessUnit.Queue(this);
+        protected final StringAccessUnit.Queue stringAccessUnits =
+                new StringAccessUnit.Queue(this);
 
         /**
          * An access unit for basic string access.
@@ -187,32 +210,47 @@ import static org.eclipse.emf.common.util.URI.*;
             protected String value;
 
             /**
-             * The cached hash code computed by {@link #findMajorSeparator(int, String, int)} and {@link #findSegmentEnd(int, String, int)}.
+             * The cached hash code computed by
+             * {@link #findMajorSeparator(int, String, int)} and
+             * {@link #findSegmentEnd(int, String, int)}.
              */
             protected int findHashCode;
 
             /**
-             * The cached terminating character computed by {@link #findMajorSeparator(int, String, int)} and {@link #findSegmentEnd(int, String, int)}.
+             * The cached terminating character computed by
+             * {@link #findMajorSeparator(int, String, int)} and
+             * {@link #findSegmentEnd(int, String, int)}.
              */
             protected char findTerminatingCharacter;
 
             /**
-             * An access unit for exclusive use in {@link #internArray(String, int, int, int)}.
+             * An access unit for exclusive use in
+             * {@link #internArray(String, int, int, int)}.
              */
-            protected SegmentSequence.StringArrayPool.SubstringAccessUnit stringArraySubstringAccessUnit = new SegmentSequence.StringArrayPool.SubstringAccessUnit(null);
+            protected SegmentSequence.StringArrayPool.SubstringAccessUnit
+                    stringArraySubstringAccessUnit =
+                    new SegmentSequence.StringArrayPool.SubstringAccessUnit(null);
 
             /**
-             * An access unit for exclusive use in {@link #internArray(int, String[], int, String, int, int, int)}.
+             * An access unit for exclusive use in
+             * {@link #internArray(int, String[], int, String, int, int, int)}.
              */
-            protected SegmentSequence.StringArrayPool.SegmentsAndSubsegmentAccessUnit stringArraySegmentsAndSubsegmentAccessUnit = new SegmentSequence.StringArrayPool.SegmentsAndSubsegmentAccessUnit(null);
+            protected SegmentSequence.StringArrayPool.SegmentsAndSubsegmentAccessUnit
+                    stringArraySegmentsAndSubsegmentAccessUnit =
+                    new SegmentSequence.StringArrayPool.SegmentsAndSubsegmentAccessUnit(null);
 
-            protected String[] internArray(String segment, int offset, int count, int hashCode)
+            protected String[] internArray(String segment, int offset, int count,
+                                           int hashCode)
             {
-                stringArraySubstringAccessUnit.setValue(segment, offset, count, hashCode);
-                return SegmentSequence.STRING_ARRAY_POOL.doIntern(false, stringArraySubstringAccessUnit);
+                stringArraySubstringAccessUnit.setValue(segment, offset, count,
+                        hashCode);
+                return SegmentSequence.STRING_ARRAY_POOL.
+                        doIntern(false, stringArraySubstringAccessUnit);
             }
 
-            protected String[] internArray(int hashCode, String[] segments, int segmentCount, String segment, int offset, int count, int segmentHashCode)
+            protected String[] internArray(int hashCode, String[] segments,
+                                           int segmentCount, String segment,
+                                           int offset, int count, int segmentHashCode)
             {
                 if (segmentCount == 0)
                 {
@@ -220,15 +258,19 @@ import static org.eclipse.emf.common.util.URI.*;
                 }
                 else
                 {
-                    stringArraySegmentsAndSubsegmentAccessUnit.setValue(hashCode, segments, segmentCount, segment, offset, count, segmentHashCode);
-                    return SegmentSequence.STRING_ARRAY_POOL.doIntern(false, stringArraySegmentsAndSubsegmentAccessUnit);
+                    stringArraySegmentsAndSubsegmentAccessUnit.
+                            setValue(hashCode, segments, segmentCount, segment,
+                                    offset, count, segmentHashCode);
+                    return SegmentSequence.STRING_ARRAY_POOL.
+                            doIntern(false, stringArraySegmentsAndSubsegmentAccessUnit);
                 }
             }
 
             /**
              * Creates an instance managed by this queue and pool.
              */
-            protected StringAccessUnit(Queue queue, org.eclipse.emf.common.util.URIPool pool)
+            protected StringAccessUnit(Queue queue,
+                                       org.eclipse.emf.common.util.URIPool pool)
             {
                 super(queue);
                 this.pool = pool;
@@ -304,7 +346,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 //
                 if (findTerminatingCharacter == SCHEME_SEPARATOR)
                 {
-                    // Look if the scheme's hash code matches one of the most likely schemes we expect to find...
+                    // Look if the scheme's hash code matches one of the most
+                    // likely schemes we expect to find...
                     //
                     int findHashCode = this.findHashCode;
                     if (findHashCode == SCHEME_PLATFORM_HASH_CODE)
@@ -336,7 +379,9 @@ import static org.eclipse.emf.common.util.URI.*;
                         isArchiveScheme = true;
                     }
 
-                    // If it isn't one of the expected schemes, or it is, then we need to make sure it's really equal to what's in the URI, not an accidential hash code collision...
+                    // If it isn't one of the expected schemes, or it is,
+                    // then we need to make sure it's really equal to what's in the URI,
+                    // not an accidential hash code collision...
                     //
                     if (scheme == null || !scheme.regionMatches(0, uri, 0, j))
                     {
@@ -351,11 +396,14 @@ import static org.eclipse.emf.common.util.URI.*;
                         scheme = stringAccessUnit.match();
                         stringAccessUnit.reset(false);
 
-                        // Determine if the provided version is in normal form, i.e., already lower cased.
+                        // Determine if the provided version is in normal form,
+                        // i.e., already lower cased.
                         //
                         isSchemeNormal = unnormalizedScheme == scheme;
 
-                        // Check whether it's a different hash code; we'll need to compute the right hash code if we've lower cased the scheme.
+                        // Check whether it's a different hash code;
+                        // we'll need to compute the right hash code if
+                        // we've lower cased the scheme.
                         //
                         hasExpectedHashCode = scheme.hashCode() == findHashCode;
 
@@ -389,7 +437,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         throw new IllegalArgumentException("no archive separator");
                     }
 
-                    // In that case it's an absolute path and the authority is everything up to and including the ! of the archive separator.
+                    // In that case it's an absolute path and the authority is
+                    // everything up to and including the ! of the archive separator.
                     //
                     absolutePath = true;
                     authority = intern(uri, i, ++j - i);
@@ -417,7 +466,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         //
                         if (findTerminatingCharacter == SEGMENT_SEPARATOR)
                         {
-                            // Then it's an absolute path so look for the end of the following segment.
+                            // Then it's an absolute path so look for
+                            // the end of the following segment.
                             //
                             absolutePath = true;
                             j = findSegmentEnd(length, uri, ++i);
@@ -425,17 +475,21 @@ import static org.eclipse.emf.common.util.URI.*;
                     }
                     else
                     {
-                        // Because it started with a /, the current segment, which we'll capcture below, is the start of an absolute path.
+                        // Because it started with a /, the current segment,
+                        // which we'll capcture below, is the start of an absolute path.
                         //
                         absolutePath = true;
                     }
                 }
                 else if (scheme != null)
                 {
-                    // There's a scheme, but it's not followed immediately by a /, so it's an opaque 
+                    // There's a scheme, but it's not followed immediately
+                    // by a /, so it's an opaque
                     //
                     authority = intern(uri, i, length - i);
-                    URI resultURI = pool.intern(false, org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_NONE, false, scheme, authority, null, false, null, null);
+                    URI resultURI = pool.intern(false,
+                            org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_NONE,
+                            false, scheme, authority, null, false, null, null);
 
                     // If something tries to add an entry for this access unit, we'd better be sure that the hash code is that of the transformed 
                     //
@@ -467,7 +521,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 }
                 // If this first segment ends with a : and we're not processing an archive URI, then treat it as the device...
                 //
-                else if (!isArchiveScheme && !isPlatformScheme && uri.charAt(j - 1) == DEVICE_IDENTIFIER)
+                else if (!isArchiveScheme && !isPlatformScheme && uri.charAt(j - 1)
+                        == DEVICE_IDENTIFIER)
                 {
                     device = intern(uri, start, len, findHashCode);
 
@@ -488,7 +543,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         // If it's empty, then we ignore it because the empty segment is implicit from this being an absolute path.
                         // Or, if there is another /, then we have another segment to process.
                         //
-                        segmentsRemain = i != j || findTerminatingCharacter == SEGMENT_SEPARATOR;
+                        segmentsRemain = i != j ||
+                                findTerminatingCharacter == SEGMENT_SEPARATOR;
                     }
                 }
                 else
@@ -502,7 +558,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     //
                     if (findTerminatingCharacter != QUERY_SEPARATOR)
                     {
-                        // Find the end of the following segment, and indicate that we should process it.
+                        // Find the end of the following segment,
+                        // and indicate that we should process it.
                         //
                         j = findSegmentEnd(length, uri, ++i);
                         segmentsRemain = true;
@@ -517,7 +574,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     {
                         // Append that segment...
                         //
-                        segments = internArray(segmentsHashCode, segments, segments.length, uri, i, j - i, findHashCode);
+                        segments = internArray(segmentsHashCode, segments,
+                                segments.length, uri, i, j - i, findHashCode);
                         segmentsHashCode = 31 * segmentsHashCode + findHashCode;
                         i = j;
 
@@ -538,7 +596,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     }
                 }
 
-                // If we're not yet past the end of the string, what remains must be the query string.
+                // If we're not yet past the end of the string,
+                // what remains must be the query string.
                 //
                 if (i++ < length)  // implies uri.charAt(i) == QUERY_SEPARATOR
                 {
@@ -547,18 +606,24 @@ import static org.eclipse.emf.common.util.URI.*;
                     query = intern(uri, i, length - i);
                 }
 
-                // If we're sure we have the right hash code (the scheme was not lower cased), we can use it, otherwise, we must compute a hash code.
+                // If we're sure we have the right hash code
+                // (the scheme was not lower cased),
+                // we can use it, otherwise, we must compute a hash code.
                 //
                 URI resultURI;
                 if (hasExpectedHashCode)
                 {
-                    resultURI = pool.intern(true, true, scheme, authority, device, absolutePath, segments, query, hashCode);
+                    resultURI = pool.intern(true, true, scheme, authority,
+                            device, absolutePath, segments, query, hashCode);
                 }
                 else
                 {
-                    resultURI = pool.intern(true, org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_NONE, true, scheme, authority, device, absolutePath, segments, query);
+                    resultURI = pool.intern(true,
+                            org.eclipse.emf.common.util.URIPool.URIComponentsAccessUnit.VALIDATE_NONE,
+                            true, scheme, authority, device, absolutePath, segments, query);
 
-                    // If something tries to add an entry for this access unit, we'd better be sure that the hash code is that of the transformed 
+                    // If something tries to add an entry for this access unit,
+                    // we'd better be sure that the hash code is that of the transformed
                     //
                     this.hashCode = resultURI.hashCode();
                 }
@@ -572,7 +637,10 @@ import static org.eclipse.emf.common.util.URI.*;
             }
 
             /**
-             * Looks for a '/', ':', or '?', computing the {@link #findHashCode hash code} and {@link #findTerminatingCharacter setting the character} that terminated the scan.
+             * Looks for a '/', ':', or '?', computing the
+             * {@link #findHashCode hash code} and
+             * {@link #findTerminatingCharacter setting the character}
+             * that terminated the scan.
              */
             protected int findMajorSeparator(int length, String s, int i)
             {
@@ -581,7 +649,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 for (; i < length; i++)
                 {
                     char c = s.charAt(i);
-                    if (c == SEGMENT_SEPARATOR || c == SCHEME_SEPARATOR || c == QUERY_SEPARATOR)
+                    if (c == SEGMENT_SEPARATOR || c == SCHEME_SEPARATOR ||
+                            c == QUERY_SEPARATOR)
                     {
                         findTerminatingCharacter = c;
                         break;
@@ -593,7 +662,9 @@ import static org.eclipse.emf.common.util.URI.*;
             }
 
             /**
-             * Looks for a '/', or '?', computing the {@link #findHashCode hash code} and {@link #findTerminatingCharacter setting the character} that terminated the scan.
+             * Looks for a '/', or '?', computing the
+             * {@link #findHashCode hash code} and
+             * {@link #findTerminatingCharacter setting the character} that terminated the scan.
              */
             protected int findSegmentEnd(int length, String s, int i)
             {
@@ -624,7 +695,8 @@ import static org.eclipse.emf.common.util.URI.*;
         /**
          * Access units for platform URI string-based access.
          */
-        protected final PlatformAccessUnit.Queue platformAccessUnits = new PlatformAccessUnit.Queue();
+        protected final PlatformAccessUnit.Queue platformAccessUnits =
+                new PlatformAccessUnit.Queue();
 
         /**
          * An access units for platform URI string-based access.
@@ -651,22 +723,26 @@ import static org.eclipse.emf.common.util.URI.*;
             /**
              * The hash code of <code>"platform:/resource/"</code>.
              */
-            protected static final int PLATFORM_RESOURCE_BASE_FULL_HASH_CODE = "platform:/resource/".hashCode();
+            protected static final int PLATFORM_RESOURCE_BASE_FULL_HASH_CODE =
+                    "platform:/resource/".hashCode();
 
             /**
              * The hash code of <code>"platform:/plugin/"</code>.
              */
-            protected static final int PLATFORM_PLUGIN_BASE_FULL_HASH_CODE = "platform:/plugin/".hashCode();
+            protected static final int PLATFORM_PLUGIN_BASE_FULL_HASH_CODE =
+                    "platform:/plugin/".hashCode();
 
             /**
              * The hash code of <code>"platform:/resource"</code>.
              */
-            protected static final int PLATFORM_RESOURCE_BASE_INITIAL_HASH_CODE = "platform:/resource".hashCode();
+            protected static final int PLATFORM_RESOURCE_BASE_INITIAL_HASH_CODE =
+                    "platform:/resource".hashCode();
 
             /**
              * The hash code of <code>"platform:/plugin/"</code>.
              */
-            protected static final int PLATFORM_PLUGIN_BASE_INITIAL_HASH_CODE = "platform:/plugin".hashCode();
+            protected static final int PLATFORM_PLUGIN_BASE_INITIAL_HASH_CODE =
+                    "platform:/plugin".hashCode();
 
             /**
              * The base that implicitly precedes the {@link #path}.
@@ -699,7 +775,8 @@ import static org.eclipse.emf.common.util.URI.*;
             protected int segmentCount;
 
             /**
-             * The number of segments populated with strings during intern that need to be nulled during reset.
+             * The number of segments populated with strings during intern
+             * that need to be nulled during reset.
              */
             protected int usedSegmentCount;
 
@@ -727,7 +804,8 @@ import static org.eclipse.emf.common.util.URI.*;
             }
 
             /**
-             * Caches the parameters and computes the hash code, which can involve encoding the path.
+             * Caches the parameters and computes the hash code,
+             * which can involve encoding the path.
              */
             protected void setValue(String base, String path, boolean encode)
             {
@@ -741,7 +819,9 @@ import static org.eclipse.emf.common.util.URI.*;
                     encodedPath = "/";
                     segmentBoundaries[segmentCount] = 0;
                     segmentBoundaries[segmentCount++] = 1;
-                    this.hashCode =  base == SEGMENT_RESOURCE ? PLATFORM_RESOURCE_BASE_FULL_HASH_CODE : PLATFORM_PLUGIN_BASE_FULL_HASH_CODE;
+                    this.hashCode =  base == SEGMENT_RESOURCE ?
+                            PLATFORM_RESOURCE_BASE_FULL_HASH_CODE :
+                            PLATFORM_PLUGIN_BASE_FULL_HASH_CODE;
                 }
                 else
                 {
@@ -751,7 +831,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     int maxEncodedLength = 3 * length;
                     if (characters.length <= maxEncodedLength)
                     {
-                        // Leave room for one more character, i.e., the leading / that may need to be added.
+                        // Leave room for one more character, i.e., the leading
+                        // / that may need to be added.
                         //
                         characters = new char[maxEncodedLength + 1];
                     }
@@ -768,20 +849,23 @@ import static org.eclipse.emf.common.util.URI.*;
                     //
                     boolean isModified = false;
 
-                    // Treat this character the same as a /.  In fact, on non-Wwindows systems this will be a / anyway.
+                    // Treat this character the same as a /.
+                    // In fact, on non-Windows systems this will be a / anyway.
                     //
                     char separatorchar = File.separatorChar;
 
                     char character = path.charAt(0);
                     if (character == SEGMENT_SEPARATOR)
                     {
-                        // If the path starts with a /, copy over all the characters into the buffer.
+                        // If the path starts with a /,
+                        // copy over all the characters into the buffer.
                         //
                         path.getChars(0, length, characters, 0);
                     }
                     else if (character == separatorchar)
                     {
-                        // If the path starts with a \, put a / at the start and copy over all the characters except the first into the buffer.
+                        // If the path starts with a \, put a / at the start and
+                        // copy over all the characters except the first into the buffer.
                         //
                         characters[0] = SEGMENT_SEPARATOR;
                         if (length != 1)
@@ -794,7 +878,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     }
                     else
                     {
-                        // It doesn't start with a separator character so put a / at the start and copy all the characters into the buffer after that.
+                        // It doesn't start with a separator character so put a
+                        // / at the start and copy all the characters into the buffer after that.
                         //
                         characters[0] = SEGMENT_SEPARATOR;
                         path.getChars(0, length, characters, 1);
@@ -814,16 +899,20 @@ import static org.eclipse.emf.common.util.URI.*;
                     //
                     for (int i = 1; i < length; ++i)
                     {
-                        // If the character is one that needs encoding, including the path separators or special characters.
+                        // If the character is one that needs encoding,
+                        // including the path separators or special characters.
                         //
                         character = characters[i];
                         if (encode ? character < 160 && !URI.matches(character,
                                 SEGMENT_CHAR_HI, SEGMENT_CHAR_LO) : URI.matches
-                                (character, PLATFORM_SEGMENT_RESERVED_HI, PLATFORM_SEGMENT_RESERVED_LO))
+                                (character, PLATFORM_SEGMENT_RESERVED_HI,
+                                        PLATFORM_SEGMENT_RESERVED_LO))
                         {
                             if (character == SEGMENT_SEPARATOR)
                             {
-                                // If it's a /, cache the segment hash code, and boundary, reset the segment hash code, and compose the complete hash code.
+                                // If it's a /, cache the segment hash code,
+                                // and boundary, reset the segment hash code,
+                                // and compose the complete hash code.
                                 //
                                 segmentHashCodes[segmentCount] = segmentHashCode;
                                 segmentBoundaries[segmentCount++] = i;
@@ -832,7 +921,11 @@ import static org.eclipse.emf.common.util.URI.*;
                             }
                             else if (character == separatorchar)
                             {
-                                // If it's a \, convert it to a /, cache the segment hash code, and boundary, reset the segment hash code, and compose the complete hash code, and indicate we've modified the original path.
+                                // If it's a \, convert it to a /, cache
+                                // the segment hash code, and boundary,
+                                // reset the segment hash code, and
+                                // compose the complete hash code, and
+                                // indicate we've modified the original path.
                                 //
                                 characters[i] = SEGMENT_SEPARATOR;
                                 segmentHashCodes[segmentCount] = segmentHashCode;
@@ -849,23 +942,28 @@ import static org.eclipse.emf.common.util.URI.*;
 
                                 // Shift the buffer to the right 3 characters.
                                 //
-                                System.arraycopy(characters, i + 1, characters, i + 3, length - i - 1);
+                                System.arraycopy(characters, i + 1, characters,
+                                        i + 3, length - i - 1);
 
-                                // Add a % and compose the segment hashCode and the complete hash code.
+                                // Add a % and compose the segment hashCode
+                                // and the complete hash code.
                                 //
                                 characters[i] = ESCAPE;
                                 hashCode = 31 * hashCode + ESCAPE;
                                 segmentHashCode = 31 * segmentHashCode + ESCAPE;
 
-                                // Add the first hex digit and compose the segment hashCode and the complete hash code.
+                                // Add the first hex digit and compose
+                                // the segment hashCode and the complete hash code.
                                 //
-                                char firstHexCharacter = characters[++i] = HEX_DIGITS[(character >> 4) & 0x0F];
+                                char firstHexCharacter = characters[++i] =
+                                        HEX_DIGITS[(character >> 4) & 0x0F];
                                 hashCode = 31 * hashCode + firstHexCharacter;
                                 segmentHashCode = 31 * segmentHashCode + firstHexCharacter;
 
                                 // Add the second hex digit and compose the segment hashCode and the complete hash code.
                                 //
-                                char secondHexCharacter = characters[++i] = HEX_DIGITS[character & 0x0F];
+                                char secondHexCharacter = characters[++i] =
+                                        HEX_DIGITS[character & 0x0F];
                                 hashCode = 31 * hashCode + secondHexCharacter;
                                 segmentHashCode = 31 * segmentHashCode + secondHexCharacter;
 
@@ -876,7 +974,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         }
                         else
                         {
-                            // No encoding required, so just compose the segment hash code and the complete hash code.
+                            // No encoding required, so just compose the segment
+                            // hash code and the complete hash code.
                             //
                             hashCode = 31 * hashCode + character;
                             segmentHashCode = 31 * segmentHashCode + character;
@@ -890,7 +989,10 @@ import static org.eclipse.emf.common.util.URI.*;
 
                     // Compose the overall hash code to include the base's hash code.
                     //
-                    this.hashCode = (base == SEGMENT_RESOURCE ? PLATFORM_RESOURCE_BASE_INITIAL_HASH_CODE : PLATFORM_PLUGIN_BASE_INITIAL_HASH_CODE) * CommonUtil.powerOf31(length) + hashCode;
+                    this.hashCode = (base == SEGMENT_RESOURCE ?
+                            PLATFORM_RESOURCE_BASE_INITIAL_HASH_CODE :
+                            PLATFORM_PLUGIN_BASE_INITIAL_HASH_CODE) *
+                            CommonUtil.powerOf31(length) + hashCode;
                     encodedPath = isModified ? intern(characters, 0, length, hashCode) : path;
                 }
             }
@@ -916,10 +1018,12 @@ import static org.eclipse.emf.common.util.URI.*;
                 segments[0] = base;
 
                 // Compute the hash code of the segments array.
-                // The offset is the start of the segment within the character's buffer, which is initially at index 1, i.e., after the leading /.
+                // The offset is the start of the segment within the character's
+                // buffer, which is initially at index 1, i.e., after the leading /.
                 //
                 int hashCode = 31 + base.hashCode();
-                for (int i = 0, offset = 1, segmentCount = this.segmentCount; i < segmentCount; )
+                for (int i = 0, offset = 1, segmentCount =
+                     this.segmentCount; i < segmentCount; )
                 {
                     // Get the segment's hash code.
                     //
@@ -951,7 +1055,9 @@ import static org.eclipse.emf.common.util.URI.*;
 
                 // Create a hierarchical platform-scheme URI from the interned segments.
                 //
-                return new Hierarchical(this.hashCode, SCHEME_PLATFORM, null, null, true, internArray(segments, 0, usedSegmentCount, hashCode), null);
+                return new Hierarchical(this.hashCode, SCHEME_PLATFORM, null,
+                        null, true, internArray(segments, 0, usedSegmentCount, hashCode),
+                        null);
             }
 
             @Override
@@ -974,7 +1080,8 @@ import static org.eclipse.emf.common.util.URI.*;
         /**
          * Access units for file URI string-based access.
          */
-        protected final FileAccessUnit.Queue fileAccessUnits = new FileAccessUnit.Queue();
+        protected final FileAccessUnit.Queue fileAccessUnits =
+                new FileAccessUnit.Queue();
 
         /**
          * An Access unit for file URI string-based access.
@@ -1039,7 +1146,8 @@ import static org.eclipse.emf.common.util.URI.*;
             protected int segmentCount;
 
             /**
-             * The number of segments populated with strings during intern that need to be nulled during reset.
+             * The number of segments populated with strings during intern
+             * that need to be nulled during reset.
              */
             protected int usedSegmentCount;
 
@@ -1097,11 +1205,13 @@ import static org.eclipse.emf.common.util.URI.*;
                 }
                 else
                 {
-                    // Is this path considered an absolute file by the file system implementation?
+                    // Is this path considered an absolute file
+                    // by the file system implementation?
                     //
                     isAbsoluteFile = new File(path).isAbsolute();
 
-                    // This will use either the absoluteCharacters or the relativeCharacters...
+                    // This will use either the absoluteCharacters
+                    // or the relativeCharacters...
                     //
                     char[] characters;
 
@@ -1135,7 +1245,9 @@ import static org.eclipse.emf.common.util.URI.*;
                         //
                         isAbsolutePath = true;
 
-                        // There can be at most as many encoded characters as three times the length, plus we need to account for the characters in the base.
+                        // There can be at most as many encoded characters
+                        // as three times the length, plus we need to account
+                        // for the characters in the base.
                         //
                         int maxEncodedLength = 3 * length + FILE_BASE_LENGTH;
                         if (absoluteCharacters.length <= maxEncodedLength)
@@ -1195,18 +1307,23 @@ import static org.eclipse.emf.common.util.URI.*;
                         //
                         characters = relativeCharacters;
 
-                        if (character == SEGMENT_SEPARATOR || character == separatorchar)
+                        if (character == SEGMENT_SEPARATOR ||
+                                character == separatorchar)
                         {
-                            // If the path starts with a separator, then it's an absolute path.
+                            // If the path starts with a separator,
+                            // then it's an absolute path.
                             //
                             isAbsolutePath = true;
 
-                            // Set the leading / and   copy over the characters after the leading / or \ to the buffer after that.
+                            // Set the leading / and   copy over
+                            // the characters after the leading / or \ to
+                            // the buffer after that.
                             //
                             characters[0] = SEGMENT_SEPARATOR;
                             path.getChars(1, length, characters, 1);
 
-                            // The first boundary is after the / and that's where we start processing the characters.
+                            // The first boundary is after the / and
+                            // that's where we start processing the characters.
                             //
                             segmentBoundaries[0] = i = 1;
 
@@ -1224,7 +1341,8 @@ import static org.eclipse.emf.common.util.URI.*;
                             //
                             path.getChars(0, length, characters, 0);
 
-                            // The first boundary is at the start and that's where we start processing the characters.
+                            // The first boundary is at the start and
+                            // that's where we start processing the characters.
                             //
                             segmentBoundaries[0] = i = 0;
 
@@ -1239,15 +1357,20 @@ import static org.eclipse.emf.common.util.URI.*;
                     int segmentHashCode = 0;
                     for (; i < length; ++i)
                     {
-                        // If the current character needs encoding (including the separator characters) or is the device identifier and we're processing the first segment of an absolute path...
+                        // If the current character needs encoding
+                        // (including the separator characters) or is the device identifier and we're processing the first segment of an absolute path...
                         //
                         character = characters[i];
                         if (character < 160 && (!URI.matches(character,
-                                SEGMENT_CHAR_HI, SEGMENT_CHAR_LO) || character == DEVICE_IDENTIFIER && !isAbsolutePath && segmentCount == 0))
+                                SEGMENT_CHAR_HI, SEGMENT_CHAR_LO) ||
+                                character == DEVICE_IDENTIFIER && !isAbsolutePath
+                                        && segmentCount == 0))
                         {
                             if (character == SEGMENT_SEPARATOR)
                             {
-                                // If it's a /, cache the segment hash code and the segment boundary, reset the segment hash code, and compose the segments hash code.
+                                // If it's a /, cache the segment hash code and
+                                // the segment boundary, reset the segment hash code,
+                                // and compose the segments hash code.
                                 //
                                 segmentHashCodes[segmentCount] = segmentHashCode;
                                 segmentBoundaries[++segmentCount] = i;
@@ -1256,7 +1379,9 @@ import static org.eclipse.emf.common.util.URI.*;
                             }
                             else if (character == separatorchar)
                             {
-                                // If it's a \, change it to a /, cache the segment hash code and the segment boundary, reset the segment hash code, and compose the segments hash code.
+                                // If it's a \, change it to a /, cache
+                                // the segment hash code and the segment boundary,
+                                // reset the segment hash code, and compose the segments hash code.
                                 //
                                 characters[i] = SEGMENT_SEPARATOR;
                                 segmentHashCodes[segmentCount] = segmentHashCode;
@@ -1270,21 +1395,25 @@ import static org.eclipse.emf.common.util.URI.*;
                                 //
                                 System.arraycopy(characters, i + 1, characters, i + 3, length - i - 1);
 
-                                // Add a % and compose the segment hashCode and the complete hash code.
+                                // Add a % and compose the segment hashCode
+                                // and the complete hash code.
                                 //
                                 characters[i] = ESCAPE;
                                 hashCode = 31 * hashCode + ESCAPE;
                                 segmentHashCode = 31 * segmentHashCode + ESCAPE;
 
-                                // Add the first hex digit and compose the segment hashCode and the complete hash code.
+                                // Add the first hex digit and compose
+                                // the segment hashCode and the complete hash code.
                                 //
-                                char firstHexCharacter = characters[++i] = HEX_DIGITS[(character >> 4) & 0x0F];
+                                char firstHexCharacter = characters[++i] =
+                                        HEX_DIGITS[(character >> 4) & 0x0F];
                                 hashCode = 31 * hashCode + firstHexCharacter;
                                 segmentHashCode = 31 * segmentHashCode + firstHexCharacter;
 
                                 // Add the second hex digit and compose the segment hashCode and the complete hash code.
                                 //
-                                char secondHexCharacter = characters[++i] = HEX_DIGITS[character & 0x0F];
+                                char secondHexCharacter = characters[++i] =
+                                        HEX_DIGITS[character & 0x0F];
                                 hashCode = 31 * hashCode + secondHexCharacter;
                                 segmentHashCode = 31 * segmentHashCode + secondHexCharacter;
 
@@ -1295,7 +1424,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         }
                         else
                         {
-                            // No encoding required, so just compose the segment hash code and the complete hash code.
+                            // No encoding required, so just compose the segment
+                            // hash code and the complete hash code.
                             //
                             hashCode = 31 * hashCode + character;
                             segmentHashCode = 31 * segmentHashCode + character;
@@ -1336,7 +1466,8 @@ import static org.eclipse.emf.common.util.URI.*;
 
                 // Process the appropriate characters.
                 //
-                char[] characters = isAbsoluteFile ? absoluteCharacters : relativeCharacters;
+                char[] characters = isAbsoluteFile ?
+                        absoluteCharacters : relativeCharacters;
 
                 // Parse out the device and the authority...
                 //
@@ -1361,7 +1492,8 @@ import static org.eclipse.emf.common.util.URI.*;
 
                 // Process all the segments...
                 //
-                for (int i = 0, segmentIndex = 0, offset = segmentBoundaries[0]; segmentIndex < segmentCount; ++i)
+                for (int i = 0, segmentIndex = 0, offset = segmentBoundaries[0];
+                     segmentIndex < segmentCount; ++i)
                 {
                     // The end of the current segment's boundary.
                     //
@@ -1390,15 +1522,21 @@ import static org.eclipse.emf.common.util.URI.*;
                         //
                         String segment = intern(characters, offset, count, segmentHashCode);
 
-                        // If we're at a device index while processing an absolute file, and we have an empty segment that's not the only segment or the last character of the segment is the device identifier...
+                        // If we're at a device index while processing
+                        // an absolute file, and we have an empty segment
+                        // that's not the only segment or the last character of
+                        // the segment is the device identifier...
                         //
-                        if (i == deviceIndex && isAbsoluteFile && (count == 0 && segmentCount > 1 || characters[end - 1] == DEVICE_IDENTIFIER))
+                        if (i == deviceIndex && isAbsoluteFile &&
+                                (count == 0 && segmentCount > 1 ||
+                                        characters[end - 1] == DEVICE_IDENTIFIER))
                         {
                             // If the segment has zero length...
                             //
                             if (count == 0)
                             {
-                                // Proceed to the next segment; there must be one because of the guard...
+                                // Proceed to the next segment;
+                                // there must be one because of the guard...
                                 //
                                 offset = end + 1;
                                 segmentHashCode = segmentHashCodes[++i];
@@ -1407,7 +1545,8 @@ import static org.eclipse.emf.common.util.URI.*;
 
                                 // This segment is really the authority...
                                 //
-                                authority = intern(characters, offset, count, segmentHashCode);
+                                authority = intern(characters, offset, count,
+                                        segmentHashCode);
 
                                 // There are now two fewer segments.
                                 //
@@ -1417,13 +1556,15 @@ import static org.eclipse.emf.common.util.URI.*;
                                 //
                                 deviceIndex = 2;
 
-                                // We should still consider ignoring an empty segment if it's at index 2.
+                                // We should still consider ignoring
+                                // an empty segment if it's at index 2.
                                 //
                                 ignoredEmptySegmentIndex = 2;
                             }
                             else
                             {
-                                // Otherwise the segment must end with a :, so it must be the device.
+                                // Otherwise the segment must end with a :,
+                                // so it must be the device.
                                 //
                                 device = segment;
 
@@ -1438,7 +1579,8 @@ import static org.eclipse.emf.common.util.URI.*;
                         }
                         else
                         {
-                            // It's a normal segment so include it and compose the overall segments hash code.
+                            // It's a normal segment so include it and
+                            // compose the overall segments hash code.
                             //
                             segments[segmentIndex++] = segment;
                             segmentsHashCode = 31 * segmentsHashCode + segmentHashCode;
@@ -1456,18 +1598,22 @@ import static org.eclipse.emf.common.util.URI.*;
 
                 // Intern the segments array itself.
                 //
-                String[] internedSegments = internArray(segments, 0, segmentCount, segmentsHashCode);
+                String[] internedSegments =
+                        internArray(segments, 0, segmentCount, segmentsHashCode);
                 if (isAbsoluteFile)
                 {
                     // If it's absolute, we include the file scheme, and it has an absolute path, if there is one or more segments, or if we ignored an empty segment.
                     //
-                    return new Hierarchical(this.hashCode, SCHEME_FILE, authority, device, segmentCount > 0 || ignoredEmptySegment, internedSegments, null);
+                    return new Hierarchical(this.hashCode, SCHEME_FILE,
+                            authority, device, segmentCount > 0 ||
+                            ignoredEmptySegment, internedSegments, null);
                 }
                 else
                 {
                     // It's a relative ..
                     //
-                    return new Hierarchical(this.hashCode, null, null, null, isAbsolutePath, internedSegments, null);
+                    return new Hierarchical(this.hashCode, null, null, null,
+                            isAbsolutePath, internedSegments, null);
                 }
             }
 
@@ -1490,7 +1636,8 @@ import static org.eclipse.emf.common.util.URI.*;
         /**
          * Access units for component-based access.
          */
-        protected final URIComponentsAccessUnit.Queue uriComponentsAccessUnits = new URIComponentsAccessUnit.Queue();
+        protected final URIComponentsAccessUnit.Queue uriComponentsAccessUnits =
+                new URIComponentsAccessUnit.Queue();
 
         /**
          * An Access unit for component-based access.
@@ -1498,17 +1645,20 @@ import static org.eclipse.emf.common.util.URI.*;
         protected static class URIComponentsAccessUnit extends URIPoolAccessUnitBase
         {
             /**
-             * A value for {@link #validate} that implies no checking or interning of components is required.
+             * A value for {@link #validate} that implies no checking or
+             * interning of components is required.
              */
             protected static final int VALIDATE_NONE = -1;
 
             /**
-             * A value for {@link #validate} that implies all components need to be validated.
+             * A value for {@link #validate} that implies all components
+             * need to be validated.
              */
             protected static final int VALIDATE_ALL = -2;
 
             /**
-             * A value for {@link #validate} that implies only the query componet needs validating.
+             * A value for {@link #validate} that implies only the query
+             * component needs validating.
              */
             protected static final int VALIDATE_QUERY = -3;
 
@@ -1530,7 +1680,9 @@ import static org.eclipse.emf.common.util.URI.*;
             }
 
             /**
-             * One of the special values {@link #VALIDATE_NONE}, {@link #VALIDATE_ALL}, or {@link #VALIDATE_QUERY}, or the index in the {@link #segments} that need validation.
+             * One of the special values {@link #VALIDATE_NONE}, {@link #VALIDATE_ALL},
+             * or {@link #VALIDATE_QUERY}, or the index in the {@link #segments}
+             * that need validation.
              */
             int validate;
 
@@ -1571,7 +1723,9 @@ import static org.eclipse.emf.common.util.URI.*;
             /**
              * An access unit for exclusive use in {@link #internArray(String[], int)}.
              */
-            SegmentSequence.StringArrayPool.SegmentsAccessUnit stringArraySegmentsAccessUnit = new SegmentSequence.StringArrayPool.SegmentsAccessUnit(null);
+            SegmentSequence.StringArrayPool.SegmentsAccessUnit
+                    stringArraySegmentsAccessUnit =
+                    new SegmentSequence.StringArrayPool.SegmentsAccessUnit(null);
 
             /**
              * Creates an instance managed by the given queue.
@@ -1591,14 +1745,18 @@ import static org.eclipse.emf.common.util.URI.*;
                 else
                 {
                     stringArraySegmentsAccessUnit.setValue(true, true, segments, count);
-                    return SegmentSequence.STRING_ARRAY_POOL.doIntern(false, stringArraySegmentsAccessUnit);
+                    return SegmentSequence.STRING_ARRAY_POOL.
+                            doIntern(false, stringArraySegmentsAccessUnit);
                 }
             }
 
             /**
              * Caches the parameters.
              */
-            protected void setValue(boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query, int hashCode)
+            protected void setValue(boolean hierarchical, String scheme,
+                                    String authority, String device,
+                                    boolean absolutePath, String[] segments,
+                                    String query, int hashCode)
             {
                 this.validate = VALIDATE_NONE;
                 this.hierarchical = hierarchical;
@@ -1614,7 +1772,9 @@ import static org.eclipse.emf.common.util.URI.*;
             /**
              * Caches the parameters and computes the hash code.
              */
-            protected void setValue(int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
+            protected void setValue(int validate, boolean hierarchical,
+                                    String scheme, String authority, String device,
+                                    boolean absolutePath, String[] segments, String query)
             {
                 int hashCode = 0;
                 if (scheme != null)
@@ -1646,14 +1806,17 @@ import static org.eclipse.emf.common.util.URI.*;
 
                     if (authority != null)
                     {
-                        if (!isArchiveScheme(scheme)) hashCode = hashCode * 961 + AUTHORITY_SEPARATOR_HASH_CODE;
-                        hashCode = hashCode * CommonUtil.powerOf31(authority.length()) + authority.hashCode();
+                        if (!isArchiveScheme(scheme)) hashCode = hashCode * 961 +
+                                AUTHORITY_SEPARATOR_HASH_CODE;
+                        hashCode = hashCode * CommonUtil.powerOf31(authority.length()) +
+                                authority.hashCode();
                     }
 
                     if (device != null)
                     {
                         hashCode = hashCode * 31 + SEGMENT_SEPARATOR;
-                        hashCode = hashCode * CommonUtil.powerOf31(device.length()) + device.hashCode();
+                        hashCode = hashCode * CommonUtil.powerOf31(device.length())
+                                + device.hashCode();
                     }
 
                     if (absolutePath) hashCode = hashCode * 31 + SEGMENT_SEPARATOR;
@@ -1666,18 +1829,21 @@ import static org.eclipse.emf.common.util.URI.*;
                         {
                             throw new IllegalArgumentException("invalid segment: null");
                         }
-                        hashCode = hashCode * CommonUtil.powerOf31(segment.length()) + segment.hashCode();
+                        hashCode = hashCode * CommonUtil.
+                                powerOf31(segment.length()) + segment.hashCode();
                     }
 
                     if (query != null)
                     {
                         hashCode = hashCode * 31 + QUERY_SEPARATOR;
-                        hashCode = hashCode * CommonUtil.powerOf31(query.length()) + query.hashCode();
+                        hashCode = hashCode * CommonUtil.
+                                powerOf31(query.length()) + query.hashCode();
                     }
                 }
                 else
                 {
-                    hashCode = hashCode * CommonUtil.powerOf31(authority.length()) + authority.hashCode();
+                    hashCode = hashCode * CommonUtil.
+                            powerOf31(authority.length()) + authority.hashCode();
                 }
 
                 this.hashCode = hashCode;
@@ -1686,7 +1852,8 @@ import static org.eclipse.emf.common.util.URI.*;
             @Override
             protected boolean matches(URI value)
             {
-                return value.matches(validate, hierarchical, scheme, authority, device, absolutePath, segments, query);
+                return value.matches(validate, hierarchical, scheme, authority,
+                        device, absolutePath, segments, query);
             }
 
             @Override
@@ -1709,7 +1876,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     {
                         device = intern(device);
                     }
-                    segments = segments == null ? null : internArray(segments, segments.length);
+                    segments = segments == null ? null :
+                            internArray(segments, segments.length);
                     if (query != null)
                     {
                         query = intern(query);
@@ -1735,7 +1903,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 {
                     // Validate the segments that need validation.
                     //
-                    for (int i = validate, length = segments.length; i < length; ++i)
+                    for (int i = validate, length = segments.length;
+                         i < length; ++i)
                     {
                         String segment = segments[i];
                         if (!validSegment(segment))
@@ -1749,7 +1918,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 //
                 if (hierarchical)
                 {
-                    return new Hierarchical(hashCode, scheme, authority, device, absolutePath, segments, query);
+                    return new Hierarchical(hashCode, scheme, authority, device,
+                            absolutePath, segments, query);
                 }
                 else
                 {
@@ -1784,7 +1954,8 @@ import static org.eclipse.emf.common.util.URI.*;
                 // Iterate over the entries with the matching hash code.
                 //
                 int hashCode = string.hashCode();
-                for (Entry<URI> entry = getEntry(hashCode); entry != null; entry = entry.getNextEntry())
+                for (Entry<URI> entry = getEntry(hashCode); entry != null;
+                     entry = entry.getNextEntry())
                 {
                     // Check that the referent isn't garbage collected and then compare it.
                     //
@@ -1803,7 +1974,8 @@ import static org.eclipse.emf.common.util.URI.*;
                     StringAccessUnit accessUnit = stringAccessUnits.pop(true);
                     accessUnit.setValue(string, hashCode);
 
-                    // The implementation returns an internalized value that's already pooled as a side effect.
+                    // The implementation returns an internalized value that's
+                    // already pooled as a side effect.
                     //
                     URI result = accessUnit.getInternalizedValue();
 
@@ -1842,7 +2014,9 @@ import static org.eclipse.emf.common.util.URI.*;
          * If <code>isExclusive</code> is true, acquire the {@link #writeLock} first.
          * Use {@link #intern(boolean, boolean, String, String, String, boolean, String[], String, int)} if the hash code is known and no validation is required.
          */
-        protected URI intern(boolean isExclusive, int validate, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query)
+        protected URI intern(boolean isExclusive, int validate, boolean hierarchical,
+                             String scheme, String authority, String device,
+                             boolean absolutePath, String[] segments, String query)
         {
             if (isExclusive)
             {
@@ -1851,8 +2025,10 @@ import static org.eclipse.emf.common.util.URI.*;
             URI uri;
             try
             {
-                URIComponentsAccessUnit accessUnit = uriComponentsAccessUnits.pop(isExclusive);
-                accessUnit.setValue(validate, hierarchical, scheme, authority, device, absolutePath, segments, query);
+                URIComponentsAccessUnit accessUnit =
+                        uriComponentsAccessUnits.pop(isExclusive);
+                accessUnit.setValue(validate, hierarchical, scheme, authority,
+                        device, absolutePath, segments, query);
                 uri = doIntern(isExclusive, accessUnit);
             }
             finally
@@ -1869,7 +2045,10 @@ import static org.eclipse.emf.common.util.URI.*;
          * Intern a URI from its component parts.
          * If <code>isExclusive</code> is true, acquire the {@link #writeLock} first.
          */
-        protected URI intern(boolean isExclusive, boolean hierarchical, String scheme, String authority, String device, boolean absolutePath, String[] segments, String query, int hashCode)
+        protected URI intern(boolean isExclusive, boolean hierarchical,
+                             String scheme, String authority, String device,
+                             boolean absolutePath, String[] segments, String query,
+                             int hashCode)
         {
             if (isExclusive)
             {
@@ -1878,8 +2057,10 @@ import static org.eclipse.emf.common.util.URI.*;
             URI uri;
             try
             {
-                URIComponentsAccessUnit accessUnit = uriComponentsAccessUnits.pop(isExclusive);
-                accessUnit.setValue(hierarchical, scheme, authority, device, absolutePath, segments, query, hashCode);
+                URIComponentsAccessUnit accessUnit = uriComponentsAccessUnits.
+                        pop(isExclusive);
+                accessUnit.setValue(hierarchical, scheme, authority, device,
+                        absolutePath, segments, query, hashCode);
                 uri = doIntern(isExclusive, accessUnit);
             }
             finally
@@ -1914,14 +2095,16 @@ import static org.eclipse.emf.common.util.URI.*;
         }
 
         /**
-         * A specialized weak reference used by {@link URI#toString} that removes the URI's reference when {@link #clear()} is called.
+         * A specialized weak reference used by {@link URI#toString}
+         * that removes the URI's reference when {@link #clear()} is called.
          *
          */
         protected static class CachedToString extends WeakReference<String>
         {
             protected final URI uri;
 
-            public CachedToString(URI uri, String string, ReferenceQueue<? super String> queue)
+            public CachedToString(URI uri, String string,
+                                  ReferenceQueue<? super String> queue)
             {
                 super(string, queue);
                 this.uri = uri;
