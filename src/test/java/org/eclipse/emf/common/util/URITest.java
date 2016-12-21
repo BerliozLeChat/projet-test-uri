@@ -977,4 +977,98 @@ public class URITest {
         URI uri = URI.createHierarchicalURI(segments, null, "fragment");
         assertEquals("s1/s2", uri.toFileString());
     }
+
+    @Test
+    public void testToPlateformString1() {
+        URI uri = URI.createURI("platform:/project-name");
+        assertEquals(null, uri.toPlatformString(true));
+    }
+
+    @Test
+    public void testToPlateformString2() {
+        URI uri = URI.createURI("platform:/project-name/path%23");
+        assertEquals("/path#", uri.toPlatformString(true));
+    }
+
+    @Test
+    public void testToPlateformString3() {
+        URI uri = URI.createURI("platform:/project-name/path%23");
+        assertEquals("/path%23", uri.toPlatformString(false));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAppendSegment1() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendSegment("tata/");//segment invalide
+    }
+
+    @Test
+    public void testAppendSegment2() {
+        String[] segments = { "toto", "titi" };
+        String[] s = { "toto", "titi", "tata" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendSegment("tata");
+        assertArrayEquals(s, uri.segments());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAppendSegments1() {
+        String[] segments = { "toto", "titi" };
+        String[] s = { "tutu","tata/" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendSegments(s);
+    }
+
+    @Test
+    public void testAppendSegments2() {
+        String[] segments = { "toto", "titi" };
+        String[] s = { "tutu","tata" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.appendSegments(s);
+        String[] all = { "toto", "titi","tutu","tata" };
+        assertArrayEquals(all, uri.segments());
+    }
+
+    @Test
+    public void testTrimSegments1() {
+        String[] segments = {};
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        URI new_uri = uri.trimSegments(1);
+        assertEquals(uri, new_uri);
+    }
+
+    @Test
+    public void testTrimSegments2() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.trimSegments(3);
+        String[] s = {};
+        assertArrayEquals(s, uri.segments());
+    }
+
+    @Test
+    public void testTrimSegments3() {
+        String[] segments = { "toto", "titi" };
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        uri = uri.trimSegments(1);
+        String[] s = {"toto"};
+        assertArrayEquals(s, uri.segments());
+    }
+
+    @Test
+    public void testTrimSegments4() {
+        String[] segments = {"tutu"};
+        URI uri = URI.createHierarchicalURI("scheme", "authority", "device:",
+                segments, "query", "fragment");
+        URI new_uri = uri.trimSegments(0);
+        assertEquals(uri, new_uri);
+    }
 }
